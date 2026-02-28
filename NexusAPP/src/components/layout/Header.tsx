@@ -23,7 +23,7 @@ import {
   Logout as LogoutIcon,
   Person as PersonIcon,
 } from '@mui/icons-material';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@app/hooks';
 import { logout } from '@features/auth/authSlice';
@@ -42,7 +42,33 @@ export const Header = ({ onThemeToggle }: HeaderProps) => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchRef = useRef<HTMLInputElement>(null);
   const menuOpen = Boolean(anchorEl);
+
+  // ⌘K / Ctrl+K focuses the search bar
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        searchRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      navigate(`${ROUTE_PATHS.SEARCH}?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+      searchRef.current?.blur();
+    }
+    if (e.key === 'Escape') {
+      setSearchQuery('');
+      searchRef.current?.blur();
+    }
+  };
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -108,7 +134,11 @@ export const Header = ({ onThemeToggle }: HeaderProps) => {
             <SearchIcon sx={{ color: theme.palette.text.secondary }} />
           </Box>
           <InputBase
-            placeholder="Search documents, snippets, diagrams..."
+            inputRef={searchRef}
+            placeholder="Search… (⌘K)"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearchKeyDown}
             sx={{
               color: 'inherit',
               width: '100%',
@@ -200,20 +230,20 @@ export const Header = ({ onThemeToggle }: HeaderProps) => {
         >
           <Box sx={{ px: 2, py: 1.5 }}>
             <Typography variant="subtitle2" fontWeight={600}>
-              {user ? `${user.firstName} ${user.lastName}` : 'User'}
+              {user ? `${user.firstName} ${user.lastName}` : ''}
             </Typography>
             <Typography variant="caption" color="text.secondary">
-              {user?.email || 'user@example.com'}
+              {user?.email ?? ''}
             </Typography>
           </Box>
           <Divider />
-          <MenuItem onClick={handleMenuClose}>
+          <MenuItem onClick={() => { handleMenuClose(); navigate(ROUTE_PATHS.SETTINGS); }}>
             <ListItemIcon>
               <PersonIcon fontSize="small" />
             </ListItemIcon>
             Profile
           </MenuItem>
-          <MenuItem onClick={handleMenuClose}>
+          <MenuItem onClick={() => { handleMenuClose(); navigate(ROUTE_PATHS.SETTINGS); }}>
             <ListItemIcon>
               <SettingsIcon fontSize="small" />
             </ListItemIcon>

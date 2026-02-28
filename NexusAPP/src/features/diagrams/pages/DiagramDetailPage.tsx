@@ -13,6 +13,11 @@ import { Edit as EditIcon, PlaylistAdd as AddToCollectionIcon } from '@mui/icons
 import { useState, useMemo } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { AddToCollectionDialog } from '@features/collections/components/AddToCollectionDialog';
+import { useCollaboration } from '@features/collaboration/hooks/useCollaboration';
+import { CollaborationButton } from '@features/collaboration/components/CollaborationButton';
+import { CollaborationPanel } from '@features/collaboration/components/CollaborationPanel';
+import { useAppDispatch } from '@app/hooks';
+import { setPanelOpen } from '@features/collaboration/collaborationSlice';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { MarkerType, type Node, type Edge } from 'reactflow';
@@ -67,8 +72,10 @@ const noop = () => {};
 
 export const DiagramDetailPage = () => {
   const { diagramId } = useParams<{ diagramId: string }>();
+  const dispatch = useAppDispatch();
   const { data: diagram, isLoading, isError } = useGetDiagramByIdQuery(diagramId ?? '');
   const [addToCollectionOpen, setAddToCollectionOpen] = useState(false);
+  const collab = useCollaboration(diagramId ?? '', 'Diagram');
 
   // Compute nodes/edges directly from API data — do NOT use useNodesState here.
   // useNodesState only reads its argument once on mount (when data is still loading),
@@ -135,6 +142,13 @@ export const DiagramDetailPage = () => {
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: 1 }}>
+          <CollaborationButton
+            isInSession={collab.isInSession}
+            isConnecting={collab.isConnecting}
+            panelOpen={collab.panelOpen}
+            onStart={collab.startOrJoinSession}
+            onTogglePanel={() => dispatch(setPanelOpen(!collab.panelOpen))}
+          />
           <Button
             variant="outlined"
             startIcon={<AddToCollectionIcon />}
@@ -179,6 +193,20 @@ export const DiagramDetailPage = () => {
         itemId={diagram.diagramId}
         itemType="Diagram"
         itemTitle={diagram.title}
+      />
+
+      <CollaborationPanel
+        open={collab.panelOpen}
+        sessionId={collab.sessionId}
+        resourceId={diagram.diagramId}
+        resourceType="Diagram"
+        participants={collab.participants}
+        participantCount={collab.participantCount}
+        sessionStatus={collab.sessionStatus}
+        comments={collab.comments}
+        currentUserId={collab.currentUserId}
+        onLeave={collab.leaveCurrentSession}
+        onEnd={collab.endCurrentSession}
       />
     </Box>
   );

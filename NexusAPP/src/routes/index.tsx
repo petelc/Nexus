@@ -43,6 +43,9 @@ import { CollectionDetailPage } from '@features/collections/pages/CollectionDeta
 // Search
 import { SearchPage } from '@features/search/pages/SearchPage';
 
+// Settings
+import { SettingsPage } from '@features/settings/pages/SettingsPage';
+
 // Error pages
 import { NotFoundPage } from '../pages/NotFoundPage';
 
@@ -162,6 +165,10 @@ export const createAppRouter = ({ onThemeToggle }: RouterConfig) => {
         {
           path: ROUTE_PATHS.SEARCH,
           element: <SearchPage />,
+        },
+        {
+          path: ROUTE_PATHS.SETTINGS,
+          element: <SettingsPage />,
         },
       ],
     },

@@ -13,6 +13,36 @@ export interface UserDto {
   twoFactorEnabled: boolean;
   createdAt: string;
   lastLoginAt?: string;
+  // Extended profile fields (populated by /auth/me)
+  bio?: string;
+  title?: string;
+  department?: string;
+  theme?: string;
+  language?: string;
+  notificationsEnabled?: boolean;
+  emailDigest?: string;
+}
+
+export interface UpdateProfileRequest {
+  firstName: string;
+  lastName: string;
+  avatarUrl?: string;
+  bio?: string;
+  title?: string;
+  department?: string;
+}
+
+export interface UpdatePreferencesRequest {
+  theme: string;
+  language: string;
+  notificationsEnabled: boolean;
+  emailDigest: string;
+}
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
 }
 
 export interface AuthResponseDto {
@@ -468,54 +498,103 @@ export interface ReorderCollectionItemDto {
 // COLLABORATION TYPES
 // ============================================================================
 
-export enum ResourceType {
-  Document = 'Document',
-  CodeSnippet = 'CodeSnippet',
-  Diagram = 'Diagram',
+// Session participant (REST response)
+export interface SessionParticipantDto {
+  participantId: string;
+  userId: string;
+  username: string;
+  fullName: string;
+  role: string; // 'Viewer' | 'Editor'
+  joinedAt: string;
+  leftAt?: string;
+  lastActivityAt?: string;
+  cursorPosition?: number;
+  isActive: boolean;
 }
 
+// Full session (REST response)
 export interface CollaborationSessionDto {
   sessionId: string;
-  resourceType: ResourceType;
+  resourceType: string; // 'Document' | 'Diagram'
   resourceId: string;
-  participants: ParticipantDto[];
   startedAt: string;
+  endedAt?: string;
   isActive: boolean;
+  activeParticipantCount: number;
+  participants: SessionParticipantDto[];
 }
 
-export interface ParticipantDto {
+// Real-time participant info (SignalR events)
+export interface ParticipantInfoDto {
   userId: string;
-  user?: UserDto;
+  username: string;
+  fullName: string;
+  role: string;
   joinedAt: string;
-  isActive: boolean;
-  cursorPosition?: CursorPositionDto;
 }
 
-export interface CursorPositionDto {
-  x: number;
-  y: number;
-  color: string;
+// Real-time cursor (SignalR events)
+export interface RealtimeCursorDto {
+  userId: string;
+  username: string;
+  position: number;
+  timestamp: string;
 }
 
+// Real-time session sync (sent to caller on join)
+export interface SessionSyncDto {
+  sessionId: string;
+  activeParticipants: ParticipantInfoDto[];
+  cursorPositions: RealtimeCursorDto[];
+  syncTimestamp: string;
+}
+
+// Real-time session status
+export interface SessionStatusDto {
+  sessionId: string;
+  status: string; // 'Active' | 'Inactive' | 'Ended'
+  participantCount: number;
+  timestamp: string;
+}
+
+// Comment (REST response)
 export interface CommentDto {
   commentId: string;
-  content: string;
-  createdBy: string;
-  createdByUser?: UserDto;
-  createdAt: string;
-  resourceType: ResourceType;
+  sessionId?: string;
+  resourceType: string;
   resourceId: string;
-  position?: PointDto;
-  replyToId?: string;
-  replies?: CommentDto[];
+  userId: string;
+  username: string;
+  fullName: string;
+  text: string;
+  position?: number;
+  parentCommentId?: string;
+  createdAt: string;
+  updatedAt?: string;
+  isDeleted: boolean;
+  replies: CommentDto[];
 }
 
-export interface CreateCommentDto {
-  content: string;
-  resourceType: ResourceType;
+// REST request DTOs
+export interface StartSessionDto {
+  resourceType: string; // 'Document' | 'Diagram'
   resourceId: string;
-  position?: PointDto;
-  replyToId?: string;
+}
+
+export interface AddCommentDto {
+  resourceType: string;
+  resourceId: string;
+  sessionId?: string;
+  text: string;
+  position?: number;
+}
+
+export interface UpdateCommentDto {
+  text: string;
+}
+
+export interface AddReplyDto {
+  text: string;
 }
 
 // ============================================================================

@@ -23,6 +23,10 @@ import {
   Publish as PublishIcon,
   PlaylistAdd as AddToCollectionIcon,
 } from '@mui/icons-material';
+import { useCollaboration } from '@features/collaboration/hooks/useCollaboration';
+import { CollaborationButton } from '@features/collaboration/components/CollaborationButton';
+import { CollaborationPanel } from '@features/collaboration/components/CollaborationPanel';
+import { setPanelOpen } from '@features/collaboration/collaborationSlice';
 import { useParams, useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useState } from 'react';
 import dayjs from 'dayjs';
@@ -98,6 +102,8 @@ export const DocumentDetailPage = () => {
 
   const [addToCollectionOpen, setAddToCollectionOpen] = useState(false);
 
+  const collab = useCollaboration(documentId!, 'Document');
+
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
@@ -157,6 +163,13 @@ export const DocumentDetailPage = () => {
               </Box>
 
               <Box sx={{ display: 'flex', gap: 1 }}>
+                <CollaborationButton
+                  isInSession={collab.isInSession}
+                  isConnecting={collab.isConnecting}
+                  panelOpen={collab.panelOpen}
+                  onStart={collab.startOrJoinSession}
+                  onTogglePanel={() => dispatch(setPanelOpen(!collab.panelOpen))}
+                />
                 <Button
                   variant="outlined"
                   startIcon={<AddToCollectionIcon />}
@@ -248,6 +261,20 @@ export const DocumentDetailPage = () => {
         itemId={document.documentId}
         itemType="Document"
         itemTitle={document.title}
+      />
+
+      <CollaborationPanel
+        open={collab.panelOpen}
+        sessionId={collab.sessionId}
+        resourceId={document.documentId}
+        resourceType="Document"
+        participants={collab.participants}
+        participantCount={collab.participantCount}
+        sessionStatus={collab.sessionStatus}
+        comments={collab.comments}
+        currentUserId={collab.currentUserId}
+        onLeave={collab.leaveCurrentSession}
+        onEnd={collab.endCurrentSession}
       />
     </>
   );

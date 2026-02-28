@@ -49,21 +49,22 @@ public class MeEndpoint : EndpointWithoutRequest
       return;
     }
 
-    var roles = await _userManager.GetRolesAsync(user);
-
     HttpContext.Response.StatusCode = StatusCodes.Status200OK;
-    await HttpContext.Response.WriteAsJsonAsync(new
-    {
-      user = new UserDto(
-        user.Id,
-        user.Email!,
-        user.UserName!,
-        user.FirstName,
-        user.LastName,
-        user.AvatarUrl,
-        user.EmailConfirmed,
-        user.TwoFactorEnabled),
-      roles = roles
-    }, ct);
+    await HttpContext.Response.WriteAsJsonAsync(new UserDto(
+      user.Id,
+      user.Email!,
+      user.UserName!,
+      user.FirstName,
+      user.LastName,
+      user.AvatarUrl,
+      user.EmailConfirmed,
+      user.TwoFactorEnabled,
+      user.Bio,
+      user.Title,
+      user.Department,
+      user.Theme,
+      user.Language,
+      user.NotificationsEnabled,
+      user.EmailDigest), ct);
   }
 }

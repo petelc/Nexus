@@ -6,6 +6,9 @@ import {
   RefreshTokenRequestDto,
   UserDto,
   TwoFactorSetupResponseDto,
+  UpdateProfileRequest,
+  UpdatePreferencesRequest,
+  ChangePasswordRequest,
 } from '@/types';
 import { baseQueryWithReauth } from '@api/baseQueryWithReauth';
 
@@ -110,6 +113,35 @@ export const authApi = createApi({
         body,
       }),
     }),
+
+    // Update Profile
+    updateProfile: builder.mutation<UserDto, UpdateProfileRequest>({
+      query: (body) => ({
+        url: '/auth/profile',
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    // Update Preferences
+    updatePreferences: builder.mutation<UserDto, UpdatePreferencesRequest>({
+      query: (body) => ({
+        url: '/auth/preferences',
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    // Change Password
+    changePassword: builder.mutation<{ message: string }, ChangePasswordRequest>({
+      query: (body) => ({
+        url: '/auth/change-password',
+        method: 'PUT',
+        body,
+      }),
+    }),
   }),
 });
 
@@ -125,4 +157,7 @@ export const {
   useSetup2FAMutation,
   useVerify2FAMutation,
   useDisable2FAMutation,
+  useUpdateProfileMutation,
+  useUpdatePreferencesMutation,
+  useChangePasswordMutation,
 } = authApi;
