@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import Editor, { OnMount, OnChange } from '@monaco-editor/react';
+import Editor, { type BeforeMount, OnChange } from '@monaco-editor/react';
 import { useTheme } from '@mui/material/styles';
 import { useAppSelector } from '@app/hooks';
 
@@ -26,11 +26,11 @@ export const CodeEditor = ({
   const editorFontSize = useAppSelector((state) => state.snippets.editorFontSize);
   const editorWordWrap = useAppSelector((state) => state.snippets.editorWordWrap);
 
-  // Determine Monaco theme based on MUI theme
-  const monacoTheme = theme.palette.mode === 'dark' ? 'vs-dark' : 'vs-light';
+  const nexusTheme = theme.palette.mode === 'dark' ? 'nexus-dark' : 'nexus-light';
 
-  const handleEditorDidMount: OnMount = (editor, monaco) => {
-    // Customize editor theme colors to match app theme
+  // Define custom themes before the editor mounts so the theme prop can reference them directly.
+  // Using beforeMount (not onMount) prevents the brief flash of vs-dark/vs-light red border.
+  const handleBeforeMount: BeforeMount = (monaco) => {
     monaco.editor.defineTheme('nexus-dark', {
       base: 'vs-dark',
       inherit: true,
@@ -39,6 +39,7 @@ export const CodeEditor = ({
         'editor.background': theme.palette.background.paper,
         'editor.foreground': theme.palette.text.primary,
         'editor.lineHighlightBackground': theme.palette.action.hover,
+        'editor.lineHighlightBorder': '#00000000',
         'editorLineNumber.foreground': theme.palette.text.secondary,
         'editorCursor.foreground': theme.palette.primary.main,
       },
@@ -52,13 +53,11 @@ export const CodeEditor = ({
         'editor.background': theme.palette.background.paper,
         'editor.foreground': theme.palette.text.primary,
         'editor.lineHighlightBackground': theme.palette.action.hover,
+        'editor.lineHighlightBorder': '#00000000',
         'editorLineNumber.foreground': theme.palette.text.secondary,
         'editorCursor.foreground': theme.palette.primary.main,
       },
     });
-
-    // Set custom theme
-    monaco.editor.setTheme(theme.palette.mode === 'dark' ? 'nexus-dark' : 'nexus-light');
   };
 
   const handleChange: OnChange = (value) => {
@@ -83,8 +82,8 @@ export const CodeEditor = ({
         language={language}
         value={value}
         onChange={handleChange}
-        onMount={handleEditorDidMount}
-        theme={monacoTheme}
+        beforeMount={handleBeforeMount}
+        theme={nexusTheme}
         options={{
           readOnly,
           fontSize: editorFontSize,

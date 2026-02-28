@@ -25,8 +25,11 @@ import {
   ContentCopy as CopyIcon,
   Star as StarIcon,
   StarBorder as StarBorderIcon,
+  PlaylistAdd as AddToCollectionIcon,
 } from '@mui/icons-material';
+import { useState } from 'react';
 import { useParams, useNavigate, Link as RouterLink } from 'react-router-dom';
+import { AddToCollectionDialog } from '@features/collections/components/AddToCollectionDialog';
 import dayjs from 'dayjs';
 import {
   useGetSnippetByIdQuery,
@@ -98,6 +101,8 @@ export const SnippetDetailPage = () => {
     }
   };
 
+  const [addToCollectionOpen, setAddToCollectionOpen] = useState(false);
+
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
@@ -120,6 +125,7 @@ export const SnippetDetailPage = () => {
   }
 
   return (
+    <>
     <Container maxWidth="lg" sx={{ py: 4 }}>
       {/* Breadcrumbs */}
       <Breadcrumbs sx={{ mb: 3 }}>
@@ -181,6 +187,13 @@ export const SnippetDetailPage = () => {
                 <CopyIcon />
               </IconButton>
             </Tooltip>
+            <Button
+              variant="outlined"
+              startIcon={<AddToCollectionIcon />}
+              onClick={() => setAddToCollectionOpen(true)}
+            >
+              Add to Collection
+            </Button>
           </Box>
         </Box>
 
@@ -272,5 +285,16 @@ export const SnippetDetailPage = () => {
         </Paper>
       )}
     </Container>
+
+      {snippet && (
+        <AddToCollectionDialog
+          open={addToCollectionOpen}
+          onClose={() => setAddToCollectionOpen(false)}
+          itemId={snippet.snippetId}
+          itemType="Snippet"
+          itemTitle={snippet.title}
+        />
+      )}
+    </>
   );
 };

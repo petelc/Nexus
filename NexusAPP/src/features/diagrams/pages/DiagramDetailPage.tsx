@@ -9,9 +9,10 @@ import {
   Alert,
   Paper,
 } from '@mui/material';
-import { Edit as EditIcon } from '@mui/icons-material';
+import { Edit as EditIcon, PlaylistAdd as AddToCollectionIcon } from '@mui/icons-material';
+import { useState, useMemo } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { useMemo } from 'react';
+import { AddToCollectionDialog } from '@features/collections/components/AddToCollectionDialog';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { MarkerType, type Node, type Edge } from 'reactflow';
@@ -67,6 +68,7 @@ const noop = () => {};
 export const DiagramDetailPage = () => {
   const { diagramId } = useParams<{ diagramId: string }>();
   const { data: diagram, isLoading, isError } = useGetDiagramByIdQuery(diagramId ?? '');
+  const [addToCollectionOpen, setAddToCollectionOpen] = useState(false);
 
   // Compute nodes/edges directly from API data — do NOT use useNodesState here.
   // useNodesState only reads its argument once on mount (when data is still loading),
@@ -132,14 +134,23 @@ export const DiagramDetailPage = () => {
             {diagram.elements.length} elements · {diagram.connections.length} connections
           </Typography>
         </Box>
-        <Button
-          variant="contained"
-          startIcon={<EditIcon />}
-          component={RouterLink}
-          to={buildRoute.diagramEditor(diagram.diagramId)}
-        >
-          Edit
-        </Button>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+            variant="outlined"
+            startIcon={<AddToCollectionIcon />}
+            onClick={() => setAddToCollectionOpen(true)}
+          >
+            Add to Collection
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<EditIcon />}
+            component={RouterLink}
+            to={buildRoute.diagramEditor(diagram.diagramId)}
+          >
+            Edit
+          </Button>
+        </Box>
       </Box>
 
       {/* Canvas — read only, fixed height so ReactFlow always has a pixel size */}
@@ -161,6 +172,14 @@ export const DiagramDetailPage = () => {
           readonly={true}
         />
       </Paper>
+
+      <AddToCollectionDialog
+        open={addToCollectionOpen}
+        onClose={() => setAddToCollectionOpen(false)}
+        itemId={diagram.diagramId}
+        itemType="Diagram"
+        itemTitle={diagram.title}
+      />
     </Box>
   );
 };

@@ -38,6 +38,7 @@ import { WorkspaceDetailPage } from '@features/workspaces/pages/WorkspaceDetailP
 
 // Collections
 import { CollectionsPage } from '@features/collections/pages/CollectionsPage';
+import { CollectionDetailPage } from '@features/collections/pages/CollectionDetailPage';
 
 // Search
 import { SearchPage } from '@features/search/pages/SearchPage';
@@ -153,6 +154,10 @@ export const createAppRouter = ({ onThemeToggle }: RouterConfig) => {
         {
           path: ROUTE_PATHS.COLLECTIONS,
           element: <CollectionsPage />,
+        },
+        {
+          path: ROUTE_PATHS.COLLECTION_DETAIL,
+          element: <CollectionDetailPage />,
         },
         {
           path: ROUTE_PATHS.SEARCH,

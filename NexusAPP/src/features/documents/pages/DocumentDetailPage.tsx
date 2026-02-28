@@ -21,8 +21,10 @@ import {
   Star as StarIcon,
   StarBorder as StarBorderIcon,
   Publish as PublishIcon,
+  PlaylistAdd as AddToCollectionIcon,
 } from '@mui/icons-material';
 import { useParams, useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useState } from 'react';
 import dayjs from 'dayjs';
 import {
   useGetDocumentByIdQuery,
@@ -35,6 +37,7 @@ import { toggleFavorite, toggleVersionHistory } from '../documentsSlice';
 import { ROUTE_PATHS } from '@routes/routePaths';
 import { DocumentStatus } from '@/types/api.types';
 import { RichTextEditor } from '../components/RichTextEditor';
+import { AddToCollectionDialog } from '@features/collections/components/AddToCollectionDialog';
 
 export const DocumentDetailPage = () => {
   const { documentId } = useParams<{ documentId: string }>();
@@ -93,6 +96,8 @@ export const DocumentDetailPage = () => {
     dispatch(toggleVersionHistory());
   };
 
+  const [addToCollectionOpen, setAddToCollectionOpen] = useState(false);
+
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
@@ -115,6 +120,7 @@ export const DocumentDetailPage = () => {
   }
 
   return (
+    <>
     <Box sx={{ display: 'flex', height: 'calc(100vh - 64px)' }}>
       <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
         <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -151,6 +157,13 @@ export const DocumentDetailPage = () => {
               </Box>
 
               <Box sx={{ display: 'flex', gap: 1 }}>
+                <Button
+                  variant="outlined"
+                  startIcon={<AddToCollectionIcon />}
+                  onClick={() => setAddToCollectionOpen(true)}
+                >
+                  Add to Collection
+                </Button>
                 <Tooltip title="Version History">
                   <IconButton onClick={handleToggleHistory}>
                     <HistoryIcon />
@@ -228,5 +241,14 @@ export const DocumentDetailPage = () => {
         </Box>
       )}
     </Box>
+
+      <AddToCollectionDialog
+        open={addToCollectionOpen}
+        onClose={() => setAddToCollectionOpen(false)}
+        itemId={document.documentId}
+        itemType="Document"
+        itemTitle={document.title}
+      />
+    </>
   );
 };

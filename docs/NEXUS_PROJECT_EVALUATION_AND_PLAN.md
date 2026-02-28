@@ -135,7 +135,7 @@ Total test files: **8 Playwright specs** (~1,174 lines combined)
 
 | # | Gap | Area | Impact |
 |---|-----|------|--------|
-| C1 | Main app database migration not created | Backend | The app tables do not exist in the database. API will fail at runtime for all non-identity endpoints. |
+| ~~C1~~ | ~~Main app database migration not created~~ | ~~Backend~~ | ✅ Resolved — all app tables created via SQL scripts; identity tables via EF migration. |
 | C2 | Collections feature incomplete | Frontend | No API client, no slice, stub page only. |
 | C3 | Collaboration feature incomplete | Frontend | SignalR wired on backend but no frontend UI. Real-time features are invisible. |
 | C4 | Search feature incomplete | Frontend | Global search endpoint exists on backend; frontend search page is a stub. |
@@ -377,7 +377,7 @@ Run the full Playwright suite against a locally running backend + frontend.
 
 | Priority | Task | Effort | Blocking? |
 |----------|------|--------|-----------|
-| P0 | Create main AppDbContext EF migration | 1 hr | Yes — nothing works without it |
+| ~~P0~~ | ~~Create main AppDbContext EF migration~~ | — | ✅ Done — SQL scripts used |
 | P1 | Frontend: Collections API + slice + components | 1 day | No |
 | P1 | Frontend: Collaboration API + slice + components | 1.5 days | No |
 | P1 | Frontend: Search API + slice + components | 1 day | No |

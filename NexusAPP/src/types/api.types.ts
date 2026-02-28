@@ -395,42 +395,73 @@ export interface UpdateWorkspaceDto {
 // COLLECTION TYPES
 // ============================================================================
 
-export enum CollectionItemType {
-  Document = 'Document',
-  CodeSnippet = 'CodeSnippet',
-  Diagram = 'Diagram',
+// Returned by list/search/breadcrumb endpoints (subset)
+export interface CollectionSummaryDto {
+  collectionId: string;
+  name: string;
+  icon?: string;
+  color?: string;
+  parentCollectionId?: string;
+  hierarchyLevel: number;
+  itemCount: number;
+  updatedAt: string;
 }
 
+// Returned by getCollectionById (full DTO)
 export interface CollectionDto {
   collectionId: string;
   name: string;
   description?: string;
+  parentCollectionId?: string;
   workspaceId: string;
   createdBy: string;
+  createdByUsername?: string;
   createdAt: string;
+  updatedAt: string;
+  icon?: string;
+  color?: string;
+  orderIndex: number;
+  hierarchyLevel: number;
+  hierarchyPath: string;
   itemCount: number;
-  isPublic: boolean;
+  items: CollectionItemDto[];
 }
 
 export interface CollectionItemDto {
-  itemId: string;
-  itemType: CollectionItemType;
-  itemReference: string; // ID of the referenced item
-  addedBy: string;
-  addedAt: string;
+  collectionItemId: string;
+  itemType: string;
+  itemReferenceId: string;
+  itemTitle?: string;
   order: number;
+  addedBy: string;
+  addedByUsername?: string;
+  addedAt: string;
 }
 
 export interface CreateCollectionDto {
   name: string;
   description?: string;
+  parentCollectionId?: string;
   workspaceId: string;
-  isPublic?: boolean;
+  icon?: string;
+  color?: string;
+}
+
+export interface UpdateCollectionDto {
+  name?: string;
+  description?: string;
+  icon?: string;
+  color?: string;
 }
 
 export interface AddItemToCollectionDto {
-  itemType: CollectionItemType;
-  itemReference: string;
+  itemType: string;
+  itemReferenceId: string;
+  itemTitle?: string;
+}
+
+export interface ReorderCollectionItemDto {
+  newOrder: number;
 }
 
 // ============================================================================
