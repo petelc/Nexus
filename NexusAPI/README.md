@@ -1,244 +1,196 @@
-# Nexus API - Knowledge Management System
+# Nexus API
 
-**Version:** 1.0  
-**Framework:** .NET 10  
-**Architecture:** Clean Architecture with Domain-Driven Design  
-**Shared Kernel:** Traxs.SharedKernel
+> RESTful backend for the Nexus Knowledge Management System.
 
----
-
-## 🏗️ Project Structure
-
-```
-Nexus/
-├── Nexus.sln                         # Solution file
-├── src/
-│   ├── Nexus.Core/                   # Domain Layer
-│   │   ├── Aggregates/
-│   │   │   └── DocumentAggregate/
-│   │   │       ├── Document.cs       # ✅ Aggregate Root
-│   │   │       ├── DocumentId.cs     # ✅ Strongly-typed ID
-│   │   │       ├── DocumentVersion.cs # ✅ Entity
-│   │   │       └── Tag.cs            # ✅ Entity
-│   │   ├── ValueObjects/
-│   │   │   ├── Title.cs              # ✅ Value Object
-│   │   │   └── DocumentContent.cs    # ✅ Value Object
-│   │   ├── Events/
-│   │   │   ├── DocumentCreatedEvent.cs # ✅ Domain Event
-│   │   │   └── DocumentEvents.cs     # ✅ Domain Events
-│   │   ├── Enums/
-│   │   │   └── DocumentStatus.cs     # ✅ Enum
-│   │   └── Interfaces/
-│   │       └── IDocumentRepository.cs # ✅ Repository Interface
-│   │
-│   ├── Nexus.UseCases/               # Application Layer (CQRS + MediatR)
-│   │
-│   ├── Nexus.Infrastructure/         # Infrastructure Layer (EF Core, etc.)
-│   │
-│   └── Nexus.Web/                    # Presentation Layer (API)
-│
-└── tests/
-    ├── Nexus.Core.Tests/
-    ├── Nexus.UseCases.Tests/
-    ├── Nexus.Infrastructure.Tests/
-    └── Nexus.FunctionalTests/
-```
+**Framework:** .NET 10 · **Architecture:** Clean Architecture + DDD · **Shared Kernel:** Traxs.SharedKernel
 
 ---
 
-## ✅ Completed Components
-
-### Domain Layer (Nexus.Core)
-
-#### Document Aggregate ✅
-- **Document** - Aggregate root with Traxs.SharedKernel base classes
-  - Create, Update, Publish, Archive, Delete, Restore operations
-  - Version management
-  - Tag management
-  - Business rule enforcement
-  - Domain events
-
-- **DocumentId** - Strongly-typed identifier
-  - Type-safe ID handling
-  - Implicit conversion to Guid
-
-- **DocumentVersion** - Entity for version snapshots
-  - Content versioning
-  - Change tracking
-  - Content hash for deduplication
-
-- **Tag** - Entity for categorization
-  - Name and color properties
-  - Validation
-
-#### Value Objects ✅
-- **Title** - Validated title (1-200 characters)
-- **DocumentContent** - Rich text + plain text with word count
-
-#### Domain Events ✅
-- DocumentCreatedEvent
-- DocumentUpdatedEvent
-- DocumentPublishedEvent
-- DocumentArchivedEvent
-- DocumentDeletedEvent
-- DocumentRestoredEvent
-
-#### Enums ✅
-- DocumentStatus (Draft, Published, Archived)
-
-#### Repository Interface ✅
-- IDocumentRepository with full CRUD + search operations
-
----
-
-## 📦 NuGet Packages
-
-### Nexus.Core
-```xml
-<PackageReference Include="Traxs.SharedKernel" Version="10.0.0" />
-<PackageReference Include="Ardalis.GuardClauses" Version="5.0.0" />
-```
-
-### Nexus.UseCases
-```xml
-<PackageReference Include="MediatR" Version="13.0.0" />
-<PackageReference Include="FluentValidation" Version="11.10.0" />
-<PackageReference Include="AutoMapper" Version="13.0.1" />
-```
-
-### Nexus.Infrastructure
-```xml
-<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
-<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0" />
-<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.0" />
-<PackageReference Include="StackExchange.Redis" Version="2.8.16" />
-<PackageReference Include="Azure.Storage.Blobs" Version="12.22.2" />
-<PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.16.0" />
-```
-
-### Nexus.Web
-```xml
-<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
-<PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
-<PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
-<PackageReference Include="MediatR" Version="13.0.0" />
-```
-
----
-
-## 🎯 Traxs.SharedKernel Integration
-
-The project uses **Traxs.SharedKernel** (your custom shared kernel) instead of Ardalis.SharedKernel.
-
-### Base Classes Used:
-- `EntityBase<TId>` - Base entity class
-- `ValueObject` - Base value object class
-- `DomainEventBase` - Base domain event class
-- `IRepository<T>` - Repository interface
-- `IAggregateRoot` - Aggregate root marker interface
-
-### Example Usage:
-```csharp
-// Aggregate Root
-public class Document : EntityBase<DocumentId>, IAggregateRoot
-{
-    // ... implementation
-}
-
-// Value Object
-public class Title : ValueObject
-{
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
-    }
-}
-
-// Domain Event
-public record DocumentCreatedEvent(DocumentId DocumentId, Guid CreatedBy) : DomainEventBase;
-```
-
----
-
-## 🚀 Next Steps
-
-### Phase 1: Complete Application Layer (UseCases)
-- [ ] Create Commands (CreateDocument, UpdateDocument, DeleteDocument)
-- [ ] Create Command Handlers (MediatR)
-- [ ] Create Queries (GetDocumentById, ListDocuments, SearchDocuments)
-- [ ] Create Query Handlers (MediatR)
-- [ ] Create DTOs and Mapping Profiles (AutoMapper)
-- [ ] Add FluentValidation validators
-
-### Phase 2: Infrastructure Layer
-- [ ] Create ApplicationDbContext (EF Core)
-- [ ] Create Entity Type Configurations
-- [ ] Implement DocumentRepository
-- [ ] Add Database Migrations
-- [ ] Configure Value Object conversions
-- [ ] Set up Redis caching
-- [ ] Integrate Elasticsearch
-
-### Phase 3: API Layer (Web)
-- [ ] Create DocumentsController
-- [ ] Configure JWT authentication
-- [ ] Set up Swagger/OpenAPI
-- [ ] Add middleware (exception handling, logging)
-- [ ] Configure CORS
-- [ ] Set up SignalR hubs
-
-### Phase 4: Testing
-- [ ] Unit tests for Domain
-- [ ] Integration tests for UseCases
-- [ ] Infrastructure tests
-- [ ] Functional API tests
-
----
-
-## 🛠️ Development Commands
+## Quick Start
 
 ```bash
-# Build the solution
+# Restore & build
+dotnet restore
 dotnet build
 
-# Restore packages
-dotnet restore
+# Apply migrations
+dotnet ef database update \
+  --project src/Nexus.API.Infrastructure \
+  --startup-project src/Nexus.API.Web \
+  --context IdentityDbContext
 
-# Run tests
-dotnet test
+dotnet ef database update \
+  --project src/Nexus.API.Infrastructure \
+  --startup-project src/Nexus.API.Web \
+  --context AppDbContext
 
-# Create migration (after setting up Infrastructure)
-dotnet ef migrations add InitialCreate --project src/Nexus.Infrastructure --startup-project src/Nexus.Web
+# Run
+dotnet run --project src/Nexus.API.Web
+```
 
-# Update database
-dotnet ef database update --project src/Nexus.Infrastructure --startup-project src/Nexus.Web
+API: `https://localhost:5001`
+Swagger: `https://localhost:5001/swagger`
 
-# Run the API
-dotnet run --project src/Nexus.Web
+---
+
+## Project Structure
+
+```
+NexusAPI/
+├── src/
+│   ├── Nexus.API.Core/           # Domain layer
+│   ├── Nexus.API.UseCases/       # Application layer (CQRS)
+│   ├── Nexus.API.Infrastructure/ # Infrastructure layer
+│   ├── Nexus.API.Web/            # Presentation layer (API)
+│   ├── Nexus.API.ServiceDefaults/ # Shared service config
+│   └── Nexus.API.AspireHost/     # .NET Aspire host
+└── tests/
+    ├── Nexus.API.UnitTests/
+    ├── Nexus.API.IntegrationTests/
+    ├── Nexus.API.FunctionalTests/
+    └── Nexus.API.AspireTests/
 ```
 
 ---
 
-## 📝 Notes
+## Architecture
 
-- All timestamps use UTC
-- Soft delete pattern implemented for documents
-- Version snapshots created automatically on updates
-- Domain events raised for all state changes
-- Guard clauses used for validation
-- Strongly-typed IDs for type safety
+### Domain Layer — Nexus.API.Core
+
+All aggregates use `Traxs.SharedKernel` base classes (`EntityBase<TId>`, `ValueObject`, `DomainEventBase`).
+
+| Aggregate | Description |
+|-----------|-------------|
+| `DocumentAggregate` | Rich-text docs with versioning, tags, and soft delete |
+| `CodeSnippetAggregate` | Code storage with language metadata and forking |
+| `DiagramAggregate` | Visual diagrams with elements, connections, and layers |
+| `CollectionAggregate` | Hierarchical folder structure for all content types |
+| `TeamAggregate` | Team membership with role-based access |
+| `WorkSpaceAggregate` | Scoped containers for team content |
+| `CollaborationAggregate` | Real-time sessions, participants, and comments |
+| `UserAggregate` | User profile and identity link |
+| `ResourcePermissions` | Fine-grained resource-level permissions |
+| `AuditAggregate` | Audit trail for all state changes |
+
+### Application Layer — Nexus.API.UseCases
+
+CQRS pattern via MediatR. Each feature area has:
+- Commands + Handlers
+- Queries + Handlers
+- DTOs
+- FluentValidation validators
+
+Feature areas: `Auth`, `Documents`, `CodeSnippets`, `Diagrams`, `Collections`, `Teams`, `Workspaces`, `Collaborations`, `Permissions`, `Search`
+
+### Infrastructure Layer — Nexus.API.Infrastructure
+
+| Component | Technology |
+|-----------|-----------|
+| ORM | Entity Framework Core 10 |
+| Database | SQL Server (two DbContexts: `AppDbContext`, `IdentityDbContext`) |
+| Cache | Redis via `StackExchange.Redis` |
+| File storage | Azure Blob Storage |
+| Search | Elasticsearch |
+| Email | SMTP via `EmailService` |
+| Identity | ASP.NET Core Identity |
+
+Repositories: `DocumentRepository`, `DiagramRepository`, `CodeSnippetRepository`, `CollectionRepository`, `TeamRepository`, `WorkspaceRepository`, `CollaborationRepository`, `PermissionRepository`, `UserRepository`, `TagRepository`, `RefreshTokenRepository`
+
+### Presentation Layer — Nexus.API.Web
+
+95 endpoints across 10 feature areas. See [API Endpoints reference](../docs/API-Endpoints.md) for the full list.
+
+| Feature | Endpoints |
+|---------|-----------|
+| Authentication | 9 |
+| Documents | 11 |
+| Diagrams | 14 |
+| Code Snippets | 12 |
+| Collections | 11 |
+| Teams | 9 |
+| Workspaces | 10 |
+| Collaboration (sessions + comments) | 13 |
+| Permissions | 3 |
+| Search | 1 |
+
+SignalR hub: `CollaborationHub` at `/hubs/collaboration`
 
 ---
 
-## 📖 References
+## Configuration
 
-- [Clean Architecture by Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
-- [Domain-Driven Design by Eric Evans](https://www.domainlanguage.com/ddd/)
-- [Traxs.SharedKernel NuGet Package](https://www.nuget.org/packages/Traxs.SharedKernel)
-- [MediatR Documentation](https://github.com/jbogard/MediatR)
-- [Entity Framework Core Documentation](https://docs.microsoft.com/en-us/ef/core/)
+Key settings in `appsettings.json` / environment variables:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=...;Database=NexusDB;...",
+    "Redis": "localhost:6379"
+  },
+  "Jwt": {
+    "Secret": "<secret>",
+    "Issuer": "nexus-api",
+    "Audience": "nexus-app",
+    "AccessTokenExpiryMinutes": 15,
+    "RefreshTokenExpiryDays": 7
+  },
+  "AzureBlobStorage": {
+    "ConnectionString": "...",
+    "ContainerName": "nexus-files"
+  },
+  "Elasticsearch": {
+    "Url": "http://localhost:9200"
+  }
+}
+```
 
 ---
 
-**Created:** January 31, 2026  
-**Author:** Nexus Development Team
+## Commands
+
+```bash
+# Build
+dotnet build
+
+# Run all tests
+dotnet test
+
+# Run only functional tests
+dotnet test tests/Nexus.API.FunctionalTests
+
+# Format code
+dotnet format
+
+# Add a new migration (AppDbContext)
+dotnet ef migrations add <MigrationName> \
+  --project src/Nexus.API.Infrastructure \
+  --startup-project src/Nexus.API.Web \
+  --context AppDbContext \
+  --output-dir Migrations/App
+
+# Run the API
+dotnet run --project src/Nexus.API.Web
+```
+
+---
+
+## Security
+
+- JWT bearer tokens (15-minute access, 7-day refresh)
+- ASP.NET Core Identity for user management
+- RBAC roles: `Admin`, `Editor`, `Viewer`
+- Policy-based authorization on all endpoints
+- Rate limiting, CORS, and CSP headers configured
+
+---
+
+## References
+
+- [Clean Architecture — Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- [Traxs.SharedKernel on NuGet](https://www.nuget.org/packages/Traxs.SharedKernel)
+- [MediatR](https://github.com/jbogard/MediatR)
+- [EF Core Docs](https://learn.microsoft.com/en-us/ef/core/)
+
+---
+
+**Last updated:** February 2026

@@ -1,142 +1,147 @@
-# Nexus - Knowledge Management System
+# Nexus App
+
+> React frontend for the Nexus Knowledge Management System.
 
 **Where Knowledge Connects**
 
-Modern React frontend for the Nexus Knowledge Management System, built for IT professionals and development teams.
+---
 
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Node.js 20+
-- npm 10+
-
-### Installation
+## Quick Start
 
 ```bash
-# Install dependencies
 npm install
-
-# Copy environment variables
-cp .env.example .env.local
-
-# Update .env.local with your API URLs
-```
-
-### Development
-
-```bash
-# Start development server
+cp .env.example .env.local   # update API URLs as needed
 npm run dev
-
-# Open http://localhost:3000
 ```
 
-### Build
+App: `https://localhost:3000`
 
-```bash
-# Build for production
-npm run build
+---
 
-# Preview production build
-npm run preview
-```
+## Tech Stack
 
-## 🏗️ Tech Stack
+| Library | Version | Purpose |
+|---------|---------|---------|
+| React | 19 | UI framework |
+| TypeScript | 5.9 | Type safety |
+| Material-UI | 7 | Component library |
+| Redux Toolkit | 2 | State management |
+| RTK Query | — | API data fetching |
+| React Router | 7 | Client-side routing |
+| Vite | 6 | Build tool |
+| Monaco Editor | 4 | Code snippet editor |
+| React Flow | 11 | Diagram canvas |
+| SignalR client | 8 | Real-time collaboration |
 
-- **React 19.0** - UI library
-- **TypeScript 5.9** - Type safety
-- **Material-UI 7** - Component library
-- **Redux Toolkit** - State management
-- **RTK Query** - Data fetching
-- **React Router 7** - Navigation
-- **Vite 6** - Build tool
-- **SignalR** - Real-time collaboration
+---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
-├── api/              # API client & services
-├── app/              # Redux store
-├── assets/           # Static assets
-├── components/       # Reusable components
-├── features/         # Feature modules
-│   ├── auth/
-│   ├── documents/
-│   ├── snippets/
-│   ├── diagrams/
-│   └── ...
-├── hooks/            # Custom hooks
-├── routes/           # Routing
-├── theme/            # MUI theme
-├── types/            # TypeScript types
-└── utils/            # Utilities
+├── api/                  # API client & RTK Query services
+│   ├── apiClient.ts      # Axios instance with JWT interceptors
+│   ├── baseQueryWithReauth.ts
+│   ├── signalrClient.ts  # SignalR hub connection
+│   ├── documentsApi.ts
+│   ├── snippetsApi.ts
+│   ├── diagramsApi.ts
+│   ├── teamsApi.ts
+│   └── workspacesApi.ts
+├── app/                  # Redux store
+│   ├── store.ts
+│   └── hooks.ts
+├── components/           # Shared components
+│   ├── common/
+│   ├── layout/           # AppLayout, Sidebar, Header
+│   ├── navigation/
+│   └── forms/
+├── features/             # Feature modules
+│   ├── auth/             # Login, register, 2FA
+│   ├── documents/        # Rich-text editor, version history
+│   ├── snippets/         # Monaco editor, public library
+│   ├── diagrams/         # React Flow canvas editor
+│   ├── teams/            # Team management
+│   ├── workspaces/       # Workspace management
+│   ├── collections/      # Hierarchical content folders
+│   ├── collaboration/    # Real-time sessions and comments
+│   ├── search/           # Global search
+│   └── dashboard/        # Overview and recent activity
+├── hooks/                # Custom hooks (useAuth, useSignalR, ...)
+├── routes/               # Route definitions + PrivateRoute
+├── theme/                # MUI theme (dark + light)
+├── types/                # TypeScript DTOs and domain types
+└── utils/                # Formatters, validators, constants
 ```
 
-## 🎨 Design System
+---
 
-### Colors
+## Design System
 
-- **Primary**: `#5D87FF` (Blue)
-- **Secondary**: `#49BEFF` (Cyan)
-- **Success**: `#13DEB9` (Teal)
-- **Warning**: `#FFAE1F` (Gold)
-- **Error**: `#FA896B` (Coral)
+**Primary colour:** `#5D87FF` (Blue) · **Font:** Inter + Fira Code · **Border radius:** 7px · **Grid:** 8px
 
-### Typography
+| Token | Light | Dark |
+|-------|-------|------|
+| Background | `#F5F7FA` | `#2A3447` |
+| Surface | `#FFFFFF` | `#2A3447` |
+| Elevated | `#F9FAFB` | `#253662` |
+| Border | `#E5E7EB` | `#333F55` |
+| Text primary | `#1F2937` | `#EAEFF4` |
+| Text secondary | `#6B7280` | `#7C8FAC` |
 
-- **Primary Font**: Inter (400, 500, 600, 700)
-- **Monospace**: Fira Code
+Semantic colours: Success `#13DEB9` · Warning `#FFAE1F` · Error `#FA896B` · Info `#49BEFF`
 
-### Theme
+See [Brand Guidelines](../docs/NEXUS_BRAND_GUIDELINES_2026.md) for the full design specification.
 
-- Dark mode (default)
-- Light mode toggle
-- 270px fixed sidebar
-- 7px border radius
-- 8px spacing grid
+---
 
-## 📋 Available Scripts
+## Environment Variables
 
 ```bash
-npm run dev        # Start dev server
-npm run build      # Build for production
-npm run preview    # Preview production build
-npm run lint       # Run ESLint
-npm run format     # Format with Prettier
-```
-
-## 🔧 Environment Variables
-
-```bash
-VITE_API_BASE_URL=http://localhost:5000/api/v1
-VITE_SIGNALR_HUB_URL=http://localhost:5000/hubs/collaboration
+# .env.local
+VITE_API_BASE_URL=https://localhost:5001/api/v1
+VITE_SIGNALR_HUB_URL=https://localhost:5001/hubs/collaboration
 VITE_APP_NAME=Nexus
 VITE_APP_VERSION=1.0.0
 ```
 
-## 📚 Features
+---
 
-- ✅ Authentication (Login, Register, 2FA)
-- ✅ Document Management (Rich text editor)
-- ✅ Code Snippet Library (150+ languages)
-- ✅ Diagram Builder (Flowcharts, Network, UML)
-- ✅ Real-time Collaboration
-- ✅ Team & Workspace Management
-- ✅ Collections & Tags
-- ✅ Advanced Search
+## Scripts
 
-## 🤝 Contributing
-
-Please refer to the [implementation plan](docs/NEXUS_REACT_IMPLEMENTATION_PLAN.md) for detailed development guidelines.
-
-## 📄 License
-
-© 2026 Nexus. All rights reserved.
+```bash
+npm run dev        # Start development server (https://localhost:3000)
+npm run build      # Production build → dist/
+npm run preview    # Preview production build locally
+npm run lint       # ESLint
+npm run format     # Prettier
+```
 
 ---
 
-**Documentation:**
-- [Brand Guidelines](docs/NEXUS_BRAND_GUIDELINES_2026.md)
-- [Implementation Plan](docs/NEXUS_REACT_IMPLEMENTATION_PLAN.md)
+## Feature Status
+
+| Feature | Status |
+|---------|--------|
+| Authentication (login, register, forgot password, 2FA) | Complete |
+| Documents (rich-text editor, versioning, tags) | Complete |
+| Code Snippets (Monaco editor, public library, fork) | Complete |
+| Diagram Builder (React Flow, elements, connections, layers) | Complete |
+| Teams | Complete |
+| Workspaces | Complete |
+| Dashboard | Complete |
+| Collections | In progress |
+| Real-time Collaboration | In progress |
+| Search | In progress |
+
+---
+
+## References
+
+- [API Endpoints](../docs/API-Endpoints.md)
+- [Implementation Plan](../docs/NEXUS_REACT_IMPLEMENTATION_PLAN.md)
+- [Brand Guidelines](../docs/NEXUS_BRAND_GUIDELINES_2026.md)
+
+---
+
+**Last updated:** February 2026
