@@ -40,6 +40,10 @@ public class CollectionItemConfiguration : IEntityTypeConfiguration<CollectionIt
     builder.Property(ci => ci.ItemReferenceId)
       .IsRequired();
 
+    builder.Property(ci => ci.ItemTitle)
+      .HasMaxLength(500)
+      .IsRequired(false);
+
     builder.Property(ci => ci.Order)
       .HasColumnName("OrderIndex")
       .IsRequired();

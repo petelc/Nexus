@@ -209,7 +209,7 @@ public class Collection : EntityBase<CollectionId>, IAggregateRoot
   /// <summary>
   /// Adds an item to the collection
   /// </summary>
-  public void AddItem(ItemType itemType, Guid itemReferenceId, Guid addedBy)
+  public void AddItem(ItemType itemType, Guid itemReferenceId, Guid addedBy, string? itemTitle = null)
   {
     Guard.Against.Default(itemReferenceId, nameof(itemReferenceId));
     Guard.Against.Default(addedBy, nameof(addedBy));
@@ -231,6 +231,7 @@ public class Collection : EntityBase<CollectionId>, IAggregateRoot
       CollectionItemId.CreateNew(),
       itemType,
       itemReferenceId,
+      itemTitle,
       order,
       addedBy,
       DateTime.UtcNow);

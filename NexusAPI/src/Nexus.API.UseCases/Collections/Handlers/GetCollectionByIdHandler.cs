@@ -58,6 +58,7 @@ public class GetCollectionByIdHandler : IRequestHandler<GetCollectionByIdQuery, 
         CollectionItemId = item.Id.Value,
         ItemType = item.ItemType.ToString(),
         ItemReferenceId = item.ItemReferenceId,
+        ItemTitle = item.ItemTitle,
         Order = item.Order,
         AddedBy = item.AddedBy,
         AddedAt = item.AddedAt

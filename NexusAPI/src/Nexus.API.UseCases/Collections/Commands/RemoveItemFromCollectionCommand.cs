@@ -3,7 +3,7 @@ using Ardalis.Result;
 
 namespace Nexus.API.UseCases.Collections.Commands;
 
-public class RemoveItemFromCollectionCommand : IRequest<Result>
+public class RemoveItemFromCollectionCommand : IRequest<Result<RemoveItemFromCollectionResponse>>
 {
   public Guid CollectionId { get; set; }
   public Guid ItemReferenceId { get; set; }

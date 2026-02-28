@@ -3,7 +3,7 @@ using Ardalis.Result;
 
 namespace Nexus.API.UseCases.Collections.Commands;
 
-public class DeleteCollectionCommand : IRequest<Result>
+public class DeleteCollectionCommand : IRequest<Result<DeleteCollectionResponse>>
 {
   public Guid CollectionId { get; set; }
   public bool Force { get; set; } // Force delete even if not empty

@@ -23,7 +23,7 @@ public class CollectionRepository : ICollectionRepository
     CancellationToken cancellationToken = default)
   {
     return await _context.Collections
-      .Include("_items")
+      .Include(c => c.Items)
       .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
   }
 
@@ -32,7 +32,7 @@ public class CollectionRepository : ICollectionRepository
     CancellationToken cancellationToken = default)
   {
     return await _context.Collections
-      .Include("_items")
+      .Include(c => c.Items)
       .Where(c => c.WorkspaceId == workspaceId && c.ParentCollectionId == null)
       .OrderBy(c => c.OrderIndex)
       .ThenBy(c => c.Name)
@@ -44,7 +44,7 @@ public class CollectionRepository : ICollectionRepository
     CancellationToken cancellationToken = default)
   {
     return await _context.Collections
-      .Include("_items")
+      .Include(c => c.Items)
       .Where(c => c.ParentCollectionId == parentId)
       .OrderBy(c => c.OrderIndex)
       .ThenBy(c => c.Name)
@@ -56,7 +56,7 @@ public class CollectionRepository : ICollectionRepository
     CancellationToken cancellationToken = default)
   {
     return await _context.Collections
-      .Include("_items")
+      .Include(c => c.Items)
       .Where(c => c.WorkspaceId == workspaceId)
       .OrderBy(c => c.HierarchyPath.Level)
       .ThenBy(c => c.OrderIndex)
@@ -129,7 +129,7 @@ public class CollectionRepository : ICollectionRepository
     var lowerSearch = searchTerm.ToLowerInvariant();
 
     return await _context.Collections
-      .Include("_items")
+      .Include(c => c.Items)
       .Where(c => c.WorkspaceId == workspaceId &&
                   (c.Name.ToLowerInvariant().Contains(lowerSearch) ||
                    (c.Description != null && c.Description.ToLowerInvariant().Contains(lowerSearch))))

@@ -5,11 +5,12 @@ using Ardalis.Result;
 
 namespace Nexus.API.UseCases.Collections.Commands;
 
-public class AddItemToCollectionCommand : IRequest<Result>
+public class AddItemToCollectionCommand : IRequest<Result<AddItemToCollectionResponse>>
 {
   public Guid CollectionId { get; set; }
   public string ItemType { get; set; } = string.Empty; // Document, Diagram, Snippet, SubCollection
   public Guid ItemReferenceId { get; set; }
+  public string? ItemTitle { get; set; }
 }
 
 public class AddItemToCollectionResponse

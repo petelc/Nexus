@@ -1,8 +1,10 @@
+using Ardalis.Result;
+using MediatR;
 using Nexus.API.UseCases.Collections.DTOs;
 
 namespace Nexus.API.UseCases.Collections.Queries;
 
-public class GetCollectionBreadcrumbQuery
+public class GetCollectionBreadcrumbQuery : IRequest<Result<GetCollectionBreadcrumbResponse>>
 {
   public Guid CollectionId { get; set; }
 }

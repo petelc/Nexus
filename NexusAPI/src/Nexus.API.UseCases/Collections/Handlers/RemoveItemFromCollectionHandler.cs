@@ -1,4 +1,5 @@
 using Ardalis.Result;
+using MediatR;
 using Nexus.API.Core.Aggregates.CollectionAggregate;
 using Nexus.API.Core.Interfaces;
 using Nexus.API.Core.ValueObjects;
@@ -6,7 +7,7 @@ using Nexus.API.UseCases.Collections.Commands;
 
 namespace Nexus.API.UseCases.Collections.Handlers;
 
-public class RemoveItemFromCollectionHandler
+public class RemoveItemFromCollectionHandler : IRequestHandler<RemoveItemFromCollectionCommand, Result<RemoveItemFromCollectionResponse>>
 {
   private readonly ICollectionRepository _collectionRepository;
 

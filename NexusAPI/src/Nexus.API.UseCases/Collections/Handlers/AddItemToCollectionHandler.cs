@@ -1,4 +1,5 @@
 using Ardalis.Result;
+using MediatR;
 using Nexus.API.Core.Aggregates.CollectionAggregate;
 using Nexus.API.Core.Enums;
 using Nexus.API.Core.Interfaces;
@@ -8,7 +9,7 @@ using Nexus.API.UseCases.Collections.DTOs;
 
 namespace Nexus.API.UseCases.Collections.Handlers;
 
-public class AddItemToCollectionHandler
+public class AddItemToCollectionHandler : IRequestHandler<AddItemToCollectionCommand, Result<AddItemToCollectionResponse>>
 {
   private readonly ICollectionRepository _collectionRepository;
   private readonly ICurrentUserService _currentUserService;
@@ -48,7 +49,7 @@ public class AddItemToCollectionHandler
     // Add item
     try
     {
-      collection.AddItem(itemType, command.ItemReferenceId, userId);
+      collection.AddItem(itemType, command.ItemReferenceId, userId, command.ItemTitle);
       await _collectionRepository.UpdateAsync(collection, cancellationToken);
 
       var addedItem = collection.Items.Last();
@@ -57,6 +58,7 @@ public class AddItemToCollectionHandler
         CollectionItemId = addedItem.Id.Value,
         ItemType = addedItem.ItemType.ToString(),
         ItemReferenceId = addedItem.ItemReferenceId,
+        ItemTitle = addedItem.ItemTitle,
         Order = addedItem.Order,
         AddedBy = addedItem.AddedBy,
         AddedAt = addedItem.AddedAt

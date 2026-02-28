@@ -3,7 +3,7 @@ using Ardalis.Result;
 
 namespace Nexus.API.UseCases.Collections.Commands;
 
-public class ReorderItemCommand : IRequest<Result>
+public class ReorderItemCommand : IRequest<Result<ReorderItemResponse>>
 {
   public Guid CollectionId { get; set; }
   public Guid ItemReferenceId { get; set; }

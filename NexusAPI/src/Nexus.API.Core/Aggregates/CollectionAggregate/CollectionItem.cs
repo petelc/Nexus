@@ -13,6 +13,7 @@ public class CollectionItem : EntityBase<CollectionItemId>
 
   public ItemType ItemType { get; private set; }
   public Guid ItemReferenceId { get; private set; }
+  public string? ItemTitle { get; private set; }
   public int Order
   {
     get => _order;
@@ -28,6 +29,7 @@ public class CollectionItem : EntityBase<CollectionItemId>
     CollectionItemId id,
     ItemType itemType,
     Guid itemReferenceId,
+    string? itemTitle,
     int order,
     Guid addedBy,
     DateTime addedAt)
@@ -35,6 +37,7 @@ public class CollectionItem : EntityBase<CollectionItemId>
     Id = Guard.Against.Null(id, nameof(id));
     ItemType = itemType;
     ItemReferenceId = Guard.Against.Default(itemReferenceId, nameof(itemReferenceId));
+    ItemTitle = itemTitle;
     _order = Guard.Against.Negative(order, nameof(order));
     AddedBy = Guard.Against.Default(addedBy, nameof(addedBy));
     AddedAt = addedAt;

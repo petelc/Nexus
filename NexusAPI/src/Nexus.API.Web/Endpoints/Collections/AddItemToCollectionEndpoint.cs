@@ -60,7 +60,8 @@ public class AddItemToCollectionEndpoint : EndpointWithoutRequest
     {
       CollectionId = collectionId,
       ItemType = request.ItemType,
-      ItemReferenceId = request.ItemReferenceId
+      ItemReferenceId = request.ItemReferenceId,
+      ItemTitle = request.ItemTitle,
     };
 
     try
@@ -101,4 +102,5 @@ public class AddItemRequestBody
 {
   public string ItemType { get; set; } = string.Empty;
   public Guid ItemReferenceId { get; set; }
+  public string? ItemTitle { get; set; }
 }
