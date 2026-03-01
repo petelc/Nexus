@@ -34,7 +34,8 @@ public class CodeSnippetEndpointTests : IClassFixture<CustomWebApplicationFactor
     {
       Title = title,
       Code = code,
-      Language = language
+      Language = language,
+      WorkspaceId = Guid.NewGuid()
     });
     response.EnsureSuccessStatusCode();
     var result = await response.Content.ReadFromJsonAsync<CodeSnippetDto>();
@@ -52,7 +53,8 @@ public class CodeSnippetEndpointTests : IClassFixture<CustomWebApplicationFactor
     {
       Title = "Hello World",
       Code = "Console.WriteLine(\"Hello, World!\");",
-      Language = "C#"
+      Language = "C#",
+      WorkspaceId = Guid.NewGuid()
     });
 
     response.StatusCode.ShouldBe(HttpStatusCode.Created);
@@ -74,7 +76,8 @@ public class CodeSnippetEndpointTests : IClassFixture<CustomWebApplicationFactor
       Title = "Described Snippet",
       Code = "var x = 42;",
       Language = "C#",
-      Description = "A test snippet"
+      Description = "A test snippet",
+      WorkspaceId = Guid.NewGuid()
     });
 
     response.StatusCode.ShouldBe(HttpStatusCode.Created);
@@ -92,7 +95,8 @@ public class CodeSnippetEndpointTests : IClassFixture<CustomWebApplicationFactor
       Title = "Tagged Snippet",
       Code = "print('hello')",
       Language = "Python",
-      Tags = new[] { "python", "tutorial" }
+      Tags = new[] { "python", "tutorial" },
+      WorkspaceId = Guid.NewGuid()
     });
 
     response.StatusCode.ShouldBe(HttpStatusCode.Created);
