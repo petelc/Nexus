@@ -107,6 +107,25 @@ public class CodeSnippetRepository : ICodeSnippetRepository
       .CountAsync(cs => cs.Metadata.IsPublic && !cs.IsDeleted, cancellationToken);
   }
 
+  public async Task<IEnumerable<CodeSnippet>> GetByWorkspaceIdAsync(
+    Guid workspaceId,
+    CancellationToken cancellationToken = default)
+  {
+    return await _dbContext.Set<CodeSnippet>()
+      .Include(cs => cs.Tags)
+      .Where(cs => cs.WorkspaceId == workspaceId && !cs.IsDeleted)
+      .OrderByDescending(cs => cs.UpdatedAt)
+      .ToListAsync(cancellationToken);
+  }
+
+  public async Task<int> CountByWorkspaceIdAsync(
+    Guid workspaceId,
+    CancellationToken cancellationToken = default)
+  {
+    return await _dbContext.Set<CodeSnippet>()
+      .CountAsync(cs => cs.WorkspaceId == workspaceId && !cs.IsDeleted, cancellationToken);
+  }
+
   public async Task<CodeSnippet> AddAsync(
     CodeSnippet entity,
     CancellationToken cancellationToken = default)

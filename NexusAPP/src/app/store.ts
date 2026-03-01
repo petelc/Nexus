@@ -17,6 +17,7 @@ import { diagramsApi } from '@api/diagramsApi';
 import { collectionsApi } from '@api/collectionsApi';
 import { collaborationApi } from '@api/collaborationApi';
 import { searchApi } from '@api/searchApi';
+import { adminApi } from '@api/adminApi';
 
 export const store = configureStore({
   reducer: {
@@ -54,6 +55,9 @@ export const store = configureStore({
 
     // Search
     [searchApi.reducerPath]: searchApi.reducer,
+
+    // Admin
+    [adminApi.reducerPath]: adminApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -69,7 +73,7 @@ export const store = configureStore({
         // Ignore these paths in the state
         ignoredPaths: ['signalr.connection'],
       },
-    }).concat(authApi.middleware, snippetsApi.middleware, documentsApi.middleware, workspacesApi.middleware, teamsApi.middleware, diagramsApi.middleware, collectionsApi.middleware, collaborationApi.middleware, searchApi.middleware),
+    }).concat(authApi.middleware, snippetsApi.middleware, documentsApi.middleware, workspacesApi.middleware, teamsApi.middleware, diagramsApi.middleware, collectionsApi.middleware, collaborationApi.middleware, searchApi.middleware, adminApi.middleware),
   devTools: import.meta.env.DEV,
 });
 

@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using FastEndpoints;
 using Microsoft.AspNetCore.Identity;
+using Nexus.API.Core.Aggregates.CodeSnippetAggregate;
 using Nexus.API.Core.Interfaces;
 using Nexus.API.Infrastructure.Identity;
 using Nexus.API.UseCases.CodeSnippets.DTOs;
@@ -51,8 +52,17 @@ public class GetMySnippetsEndpoint : EndpointWithoutRequest<CodeSnippetPagedResu
     var userGuid = Guid.Parse(userId);
     var user = await _userManager.FindByIdAsync(userId);
 
-    // Get all user's snippets
-    var snippets = await _snippetRepository.GetByUserIdAsync(userGuid, ct);
+    // Get snippets — optionally scoped to a workspace
+    var workspaceIdStr = HttpContext.Request.Query["workspaceId"].FirstOrDefault();
+    IEnumerable<CodeSnippet> snippets;
+    if (!string.IsNullOrEmpty(workspaceIdStr) && Guid.TryParse(workspaceIdStr, out var workspaceGuid))
+    {
+      snippets = await _snippetRepository.GetByWorkspaceIdAsync(workspaceGuid, ct);
+    }
+    else
+    {
+      snippets = await _snippetRepository.GetByUserIdAsync(userGuid, ct);
+    }
     var snippetList = snippets.ToList();
 
     // Map to list items

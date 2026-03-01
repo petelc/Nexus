@@ -1,6 +1,6 @@
 # Nexus — Master TODO
 
-**Last updated:** 2026-02-28
+**Last updated:** 2026-02-28 (updated workspace-aware dashboard)
 
 ## Legend
 - ✅ Done
@@ -74,30 +74,51 @@
 ### 5A — Settings Page (current user)
 | # | Task | Status |
 |---|------|--------|
-| 5A.1 | `SettingsPage.tsx` — tabs: Profile / Security / Preferences | ⬜ |
-| 5A.2 | Profile tab — edit display name, avatar URL | ⬜ |
-| 5A.3 | Security tab — change password form | ⬜ |
-| 5A.4 | Security tab — 2FA enable/disable (wires to existing backend endpoints) | ⬜ |
-| 5A.5 | Preferences tab — theme toggle, notification prefs (local/persisted) | ⬜ |
-| 5A.6 | Wire Settings route (`/settings`) in router | ⬜ |
+| 5A.1 | `SettingsPage.tsx` — tabs: Profile / Security / Preferences | ✅ Done |
+| 5A.2 | Profile tab — edit display name, bio, title, department, avatarUrl | ✅ Done |
+| 5A.3 | Security tab — change password form | ✅ Done |
+| 5A.4 | Security tab — 2FA enable/disable | ✅ Done |
+| 5A.5 | Preferences tab — theme, language, notifications, email digest | ✅ Done |
+| 5A.6 | Wire Settings route (`/settings`) in router | ✅ Done |
+| 5A.7 | **Fix**: `PrivateRoute` rehydrates user from `/auth/me` on page refresh | ✅ Done |
+| 5A.8 | **Fix**: `MeEndpoint` + update endpoints now return `UserDto` directly (not wrapped) | ✅ Done |
 
-**Backend endpoints available:**
-- `GET /auth/me` — current user profile
-- `POST /auth/enable-2fa`, `POST /auth/verify-2fa`, `POST /auth/disable-2fa`
-- Change password: **needs new backend endpoint** (`PUT /auth/change-password`)
+**Backend endpoints:**
+- `GET /auth/me` → `UserDto`
+- `PUT /auth/profile` → `UserDto`
+- `PUT /auth/preferences` → `UserDto`
+- `PUT /auth/change-password` → `{ message }`
 
-### 5B — Admin: User Management (new feature)
+### 5B — Admin: User Management
 | # | Task | Status |
 |---|------|--------|
-| 5B.1 | **Backend**: `GET /admin/users` — paginated list of all users (Admin only) | ⬜ |
-| 5B.2 | **Backend**: `GET /admin/users/{id}` — user detail with roles | ⬜ |
-| 5B.3 | **Backend**: `PUT /admin/users/{id}/roles` — assign/update user roles | ⬜ |
-| 5B.4 | **Backend**: `PUT /admin/users/{id}/status` — activate / deactivate account | ⬜ |
-| 5B.5 | Frontend: `AdminUsersPage.tsx` — data grid of all users (Admin-gated route) | ⬜ |
-| 5B.6 | Frontend: User role assignment dialog | ⬜ |
-| 5B.7 | Frontend: Admin sidebar section (only visible to Admin role) | ⬜ |
+| 5B.1 | **Backend**: `GET /admin/users` — paginated list with search | ✅ Done |
+| 5B.2 | **Backend**: `GET /admin/users/{id}` — user detail with roles | ✅ Done |
+| 5B.3 | **Backend**: `PUT /admin/users/{id}/roles` — assign/update user roles | ✅ Done |
+| 5B.4 | **Backend**: `PUT /admin/users/{id}/status` — activate / deactivate account | ✅ Done |
+| 5B.5 | Frontend: `AdminUsersPage.tsx` — table with search, pagination, status toggle | ✅ Done |
+| 5B.6 | Frontend: Role assignment dialog (checkbox per role) | ✅ Done |
+| 5B.7 | Frontend: Admin sidebar section (visible to Admin role only) | ✅ Done |
+| 5B.8 | `UserDto` extended with `Roles` — returned by `/auth/me` | ✅ Done |
 
 **Available roles (ASP.NET Identity):** `Viewer`, `Editor`, `Admin`, `Guest`
+
+---
+
+## Phase 5C — Workspace-Aware Dashboard
+| # | Task | Status |
+|---|------|--------|
+| 5C.1 | Add `WorkspaceId` (nullable) to Document, CodeSnippet, Diagram domain entities + EF configs | ✅ Done |
+| 5C.2 | EF migration `AddWorkspaceIdToContent` + filtered indexes | ✅ Done |
+| 5C.3 | `GetByWorkspaceIdAsync` + `CountByWorkspaceIdAsync` on all three repositories | ✅ Done |
+| 5C.4 | Thread `WorkspaceId` through CreateDocument command, CreateSnippet + CreateDiagram endpoints | ✅ Done |
+| 5C.5 | `WorkspaceDto` counts (`DocumentCount`, `SnippetCount`, `DiagramCount`) populated by workspace handlers | ✅ Done |
+| 5C.6 | `workspaceId` filter added to `ListDocuments`, `GetMySnippets`, `GetMyDiagrams` endpoints | ✅ Done |
+| 5C.7 | Frontend: RTK Query `invalidatesTags` adds `Workspace` on create/delete for all three content types | ✅ Done |
+| 5C.8 | Frontend: Dashboard queries pass `workspaceId` when workspace is selected; stat cards + recent items are workspace-scoped | ✅ Done |
+| 5C.9 | Frontend: `CreateDiagramPage` reads `currentWorkspaceId` and passes it to create mutation | ✅ Done |
+
+**Note:** Pre-migration rows have `NULL` WorkspaceId — they appear in global (no-workspace) view but not workspace-scoped counts/lists. New content created within a workspace is fully scoped.
 
 ---
 
@@ -141,4 +162,5 @@
 - `CollectionItem.ItemTitle` is denormalized at add-time (won't auto-update if resource renamed — acceptable trade-off)
 - 96/96 backend functional tests passing (Auth, Documents, Snippets, Teams, Workspaces)
 - SignalR "ws proxy socket error" = API not running; `CollaborationButton` now shows a friendly error snackbar
-- Settings route (`/settings`) exists in `routePaths.ts` but page is not yet built
+- Settings page (`/settings`) fully implemented — Profile, Preferences, Security tabs
+- `PrivateRoute` now rehydrates user from `/auth/me` on page refresh (fixes user@example.com fallback)

@@ -26,8 +26,12 @@ public class ListDocumentsHandler : IRequestHandler<ListDocumentsQuery, ListDocu
   {
     IEnumerable<Document> documents;
 
-    // Use search if provided, otherwise load all
-    if (!string.IsNullOrEmpty(request.Search))
+    // Workspace-scoped path
+    if (request.WorkspaceId.HasValue)
+    {
+      documents = await _repository.GetByWorkspaceIdAsync(request.WorkspaceId.Value, cancellationToken);
+    }
+    else if (!string.IsNullOrEmpty(request.Search))
     {
       documents = await _repository.SearchAsync(request.Search, cancellationToken);
     }

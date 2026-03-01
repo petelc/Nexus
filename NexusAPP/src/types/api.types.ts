@@ -21,6 +21,42 @@ export interface UserDto {
   language?: string;
   notificationsEnabled?: boolean;
   emailDigest?: string;
+  roles?: string[];
+}
+
+// ============================================================================
+// ADMIN TYPES
+// ============================================================================
+
+export interface AdminUserDto {
+  userId: string;
+  email: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl?: string;
+  emailConfirmed: boolean;
+  twoFactorEnabled: boolean;
+  isActive: boolean;
+  createdAt: string;
+  lastLoginAt?: string;
+  roles: string[];
+}
+
+export interface AdminUsersPagedDto {
+  items: AdminUserDto[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+}
+
+export interface UpdateUserRolesRequest {
+  roles: string[];
+}
+
+export interface UpdateUserStatusRequest {
+  isActive: boolean;
 }
 
 export interface UpdateProfileRequest {
@@ -305,6 +341,7 @@ export interface CreateDiagramRequest {
   diagramType: DiagramType;
   canvas?: Partial<DiagramCanvasDto>;
   collectionId?: string;
+  workspaceId: string;
 }
 
 export interface UpdateDiagramRequest {
@@ -646,6 +683,7 @@ export interface DocumentFilterDto {
   pageSize?: number;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
+  workspaceId?: string;
 }
 
 export interface SnippetFilterDto {
@@ -657,6 +695,7 @@ export interface SnippetFilterDto {
   pageSize?: number;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
+  workspaceId?: string;
 }
 
 export interface DiagramFilterDto {
@@ -664,4 +703,5 @@ export interface DiagramFilterDto {
   searchTerm?: string;
   page?: number;
   pageSize?: number;
+  workspaceId?: string;
 }

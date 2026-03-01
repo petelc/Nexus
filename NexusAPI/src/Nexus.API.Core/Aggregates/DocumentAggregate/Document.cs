@@ -24,6 +24,7 @@ public class Document : EntityBase<DocumentId>, IAggregateRoot
     public DocumentStatus Status { get; private set; }
     public int ReadingTimeMinutes { get; private set; }
     public string LanguageCode { get; private set; } = "en-US";
+    public Guid? WorkspaceId { get; private set; }
     public bool IsDeleted { get; private set; }
     public DateTime? DeletedAt { get; private set; }
 
@@ -37,7 +38,7 @@ public class Document : EntityBase<DocumentId>, IAggregateRoot
     /// <summary>
     /// Factory method to create a new document
     /// </summary>
-    public static Document Create(Title title, DocumentContent content, Guid createdBy, string? languageCode = null)
+    public static Document Create(Title title, DocumentContent content, Guid createdBy, Guid? workspaceId = null, string? languageCode = null)
     {
         Guard.Against.Null(title, nameof(title));
         Guard.Against.Null(content, nameof(content));
@@ -49,6 +50,7 @@ public class Document : EntityBase<DocumentId>, IAggregateRoot
             Title = title,
             Content = content,
             CreatedBy = createdBy,
+            WorkspaceId = workspaceId,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
             Status = DocumentStatus.Draft,

@@ -127,6 +127,20 @@ public class DiagramRepository : IDiagramRepository
       .CountAsync(cancellationToken);
   }
 
+  public async Task<int> CountByWorkspaceIdAsync(Guid workspaceId, CancellationToken cancellationToken = default)
+  {
+    return await _context.Diagrams
+      .CountAsync(d => d.WorkspaceId == workspaceId, cancellationToken);
+  }
+
+  public async Task<List<Diagram>> GetByWorkspaceIdAsync(Guid workspaceId, CancellationToken cancellationToken = default)
+  {
+    return await _context.Diagrams
+      .Where(d => d.WorkspaceId == workspaceId)
+      .OrderByDescending(d => d.UpdatedAt)
+      .ToListAsync(cancellationToken);
+  }
+
   public async Task<bool> ExistsAsync(DiagramId id, CancellationToken cancellationToken = default)
   {
     return await _context.Diagrams

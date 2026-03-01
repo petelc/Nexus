@@ -46,6 +46,9 @@ import { SearchPage } from '@features/search/pages/SearchPage';
 // Settings
 import { SettingsPage } from '@features/settings/pages/SettingsPage';
 
+// Admin
+import { AdminUsersPage } from '@features/admin/pages/AdminUsersPage';
+
 // Error pages
 import { NotFoundPage } from '../pages/NotFoundPage';
 
@@ -169,6 +172,10 @@ export const createAppRouter = ({ onThemeToggle }: RouterConfig) => {
         {
           path: ROUTE_PATHS.SETTINGS,
           element: <SettingsPage />,
+        },
+        {
+          path: ROUTE_PATHS.ADMIN_USERS,
+          element: <AdminUsersPage />,
         },
       ],
     },

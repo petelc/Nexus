@@ -11,7 +11,7 @@ import { baseQueryWithReauth } from './baseQueryWithReauth';
 export const snippetsApi = createApi({
   reducerPath: 'snippetsApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Snippet', 'PublicSnippets'],
+  tagTypes: ['Snippet', 'PublicSnippets', 'Workspace'],
   endpoints: (builder) => ({
     // Get current user's snippets with filtering
     getSnippets: builder.query<PaginatedResultDto<CodeSnippetDto>, SnippetFilterDto>({
@@ -50,7 +50,7 @@ export const snippetsApi = createApi({
         method: 'POST',
         body: snippet,
       }),
-      invalidatesTags: [{ type: 'Snippet', id: 'LIST' }],
+      invalidatesTags: [{ type: 'Snippet', id: 'LIST' }, { type: 'Workspace', id: 'LIST' }],
     }),
 
     // Update snippet
@@ -72,9 +72,10 @@ export const snippetsApi = createApi({
         url: `/snippets/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: 'Snippet', id },
         { type: 'Snippet', id: 'LIST' },
+        { type: 'Workspace', id: 'LIST' },
       ],
     }),
 

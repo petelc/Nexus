@@ -16,4 +16,5 @@ public record ListDocumentsQuery : IRequest<ListDocumentsResponse>
   public string? SortBy { get; init; } = "updatedAt";
   public string? SortOrder { get; init; } = "desc";
   public string? Search { get; init; }
+  public Guid? WorkspaceId { get; init; }
 }

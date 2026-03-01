@@ -72,6 +72,9 @@ public class DocumentConfiguration : IEntityTypeConfiguration<Document>
             .HasMaxLength(10)
             .IsRequired();
 
+        builder.Property(d => d.WorkspaceId)
+            .IsRequired(false);
+
         builder.Property(d => d.IsDeleted)
             .IsRequired();
 
@@ -110,6 +113,10 @@ public class DocumentConfiguration : IEntityTypeConfiguration<Document>
 
         builder.HasIndex(d => d.UpdatedAt)
             .HasDatabaseName("IX_Documents_UpdatedAt");
+
+        builder.HasIndex(d => d.WorkspaceId)
+            .HasDatabaseName("IX_Documents_WorkspaceId")
+            .HasFilter("[WorkspaceId] IS NOT NULL AND [IsDeleted] = 0");
 
         // Ignore Domain Events
         builder.Ignore(d => d.DomainEvents);

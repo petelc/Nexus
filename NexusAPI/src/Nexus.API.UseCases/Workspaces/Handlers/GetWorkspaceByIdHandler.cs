@@ -15,13 +15,22 @@ public class GetWorkspaceByIdHandler : IRequestHandler<GetWorkspaceByIdQuery, Re
 {
   private readonly IWorkspaceRepository _workspaceRepository;
   private readonly ICurrentUserService _currentUserService;
+  private readonly IDocumentRepository _documentRepository;
+  private readonly ICodeSnippetRepository _snippetRepository;
+  private readonly IDiagramRepository _diagramRepository;
 
   public GetWorkspaceByIdHandler(
     IWorkspaceRepository workspaceRepository,
-    ICurrentUserService currentUserService)
+    ICurrentUserService currentUserService,
+    IDocumentRepository documentRepository,
+    ICodeSnippetRepository snippetRepository,
+    IDiagramRepository diagramRepository)
   {
     _workspaceRepository = workspaceRepository;
     _currentUserService = currentUserService;
+    _documentRepository = documentRepository;
+    _snippetRepository = snippetRepository;
+    _diagramRepository = diagramRepository;
   }
 
   public async Task<Result<WorkspaceDto>> Handle(
@@ -45,6 +54,10 @@ public class GetWorkspaceByIdHandler : IRequestHandler<GetWorkspaceByIdQuery, Re
     if (!workspace.IsMember(UserId.Create(userId.Value)))
       return Result.Forbidden();
 
+    var docCount = await _documentRepository.CountByWorkspaceIdAsync(workspace.Id.Value, cancellationToken);
+    var snippetCount = await _snippetRepository.CountByWorkspaceIdAsync(workspace.Id.Value, cancellationToken);
+    var diagramCount = await _diagramRepository.CountByWorkspaceIdAsync(workspace.Id.Value, cancellationToken);
+
     // Map to DTO
     var dto = new WorkspaceDto
     {
@@ -56,6 +69,9 @@ public class GetWorkspaceByIdHandler : IRequestHandler<GetWorkspaceByIdQuery, Re
       CreatedAt = workspace.CreatedAt,
       UpdatedAt = workspace.UpdatedAt,
       MemberCount = workspace.Members.Count(m => m.IsActive),
+      DocumentCount = docCount,
+      SnippetCount = snippetCount,
+      DiagramCount = diagramCount,
       Members = request.IncludeMembers
         ? workspace.Members
             .Where(m => m.IsActive)

@@ -74,6 +74,9 @@ public class DiagramConfiguration : IEntityTypeConfiguration<Diagram>
       .IsRequired()
       .HasDefaultValueSql("SYSUTCDATETIME()");
 
+    builder.Property(d => d.WorkspaceId)
+      .IsRequired(false);
+
     // Soft Delete
     builder.Property(d => d.IsDeleted)
       .IsRequired()
@@ -125,6 +128,10 @@ public class DiagramConfiguration : IEntityTypeConfiguration<Diagram>
 
     builder.HasIndex(d => d.IsDeleted)
       .HasDatabaseName("IX_Diagrams_IsDeleted");
+
+    builder.HasIndex(d => d.WorkspaceId)
+      .HasDatabaseName("IX_Diagrams_WorkspaceId")
+      .HasFilter("[WorkspaceId] IS NOT NULL");
 
     // Query Filter for soft deletes
     builder.HasQueryFilter(d => !d.IsDeleted);

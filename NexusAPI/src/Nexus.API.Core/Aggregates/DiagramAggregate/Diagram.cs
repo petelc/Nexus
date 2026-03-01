@@ -16,6 +16,7 @@ public class Diagram : EntityBase<DiagramId>, IAggregateRoot
   public Title Title { get; private set; } = null!;
   public DiagramType DiagramType { get; private set; }
   public Guid CreatedBy { get; private set; }
+  public Guid? WorkspaceId { get; private set; }
   public DateTime CreatedAt { get; private set; }
   public DateTime UpdatedAt { get; private set; }
   public DiagramCanvas Canvas { get; private set; } = null!;
@@ -38,12 +39,14 @@ public class Diagram : EntityBase<DiagramId>, IAggregateRoot
     Title title,
     DiagramType diagramType,
     Guid createdBy,
+    Guid? workspaceId,
     DiagramCanvas canvas)
   {
     Id = id;
     Title = Guard.Against.Null(title, nameof(title));
     DiagramType = diagramType;
     CreatedBy = Guard.Against.Default(createdBy, nameof(createdBy));
+    WorkspaceId = workspaceId;
     CreatedAt = DateTime.UtcNow;
     UpdatedAt = DateTime.UtcNow;
     Canvas = canvas ?? DiagramCanvas.CreateDefault();
@@ -57,6 +60,7 @@ public class Diagram : EntityBase<DiagramId>, IAggregateRoot
     Title title,
     DiagramType diagramType,
     Guid createdBy,
+    Guid? workspaceId = null,
     DiagramCanvas? canvas = null)
   {
     var diagram = new Diagram(
@@ -64,6 +68,7 @@ public class Diagram : EntityBase<DiagramId>, IAggregateRoot
       title,
       diagramType,
       createdBy,
+      workspaceId,
       canvas ?? DiagramCanvas.CreateDefault()
     );
 

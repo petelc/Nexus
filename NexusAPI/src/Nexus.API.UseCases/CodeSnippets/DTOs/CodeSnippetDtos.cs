@@ -11,6 +11,7 @@ public class CreateSnippetRequest
   public string? LanguageVersion { get; set; }
   public string? Description { get; set; }
   public List<string>? Tags { get; set; }
+  public Guid WorkspaceId { get; set; }
 }
 
 /// <summary>

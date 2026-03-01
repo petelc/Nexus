@@ -20,7 +20,7 @@ import { baseQueryWithReauth } from './baseQueryWithReauth';
 export const diagramsApi = createApi({
   reducerPath: 'diagramsApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Diagram'],
+  tagTypes: ['Diagram', 'Workspace'],
   endpoints: (builder) => ({
     // Get current user's diagrams
     getDiagrams: builder.query<DiagramPagedResultDto, DiagramFilterDto>({
@@ -50,7 +50,7 @@ export const diagramsApi = createApi({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: [{ type: 'Diagram', id: 'LIST' }],
+      invalidatesTags: [{ type: 'Diagram', id: 'LIST' }, { type: 'Workspace', id: 'LIST' }],
     }),
 
     // Update diagram title/canvas
@@ -75,6 +75,7 @@ export const diagramsApi = createApi({
       invalidatesTags: (_result, _error, id) => [
         { type: 'Diagram', id },
         { type: 'Diagram', id: 'LIST' },
+        { type: 'Workspace', id: 'LIST' },
       ],
     }),
 

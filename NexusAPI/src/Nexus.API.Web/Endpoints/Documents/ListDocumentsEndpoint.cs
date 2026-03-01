@@ -55,6 +55,7 @@ Example: GET /documents?status=published&pageSize=50&search=api
     var sortBy = Query<string>("sortBy", isRequired: false) ?? "updatedAt";
     var sortOrder = Query<string>("sortOrder", isRequired: false) ?? "desc";
     var search = Query<string>("search", isRequired: false);
+    var workspaceId = Query<Guid?>("workspaceId", isRequired: false);
 
     // Validate page size
     if (pageSize > 100) pageSize = 100;
@@ -70,7 +71,8 @@ Example: GET /documents?status=published&pageSize=50&search=api
       CreatedBy = createdBy,
       SortBy = sortBy,
       SortOrder = sortOrder,
-      Search = search
+      Search = search,
+      WorkspaceId = workspaceId
     };
 
     var result = await _mediator.Send(query, ct);

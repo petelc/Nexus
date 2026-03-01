@@ -1,6 +1,9 @@
-import { Box, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Typography, useTheme } from '@mui/material';
+import { Box, Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Typography, useTheme } from '@mui/material';
+import { AdminPanelSettings as AdminIcon } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '@app/hooks';
 import { navigationConfig } from '@utils/navigation';
+import { ROUTE_PATHS } from '@routes/routePaths';
 
 const SIDEBAR_WIDTH = 270;
 
@@ -8,6 +11,8 @@ export const Sidebar = () => {
   const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAppSelector((state) => state.auth);
+  const isAdmin = user?.roles?.includes('Admin') ?? false;
 
   const isActive = (path: string) => {
     return location.pathname === path || location.pathname.startsWith(path + '/');
@@ -165,6 +170,62 @@ export const Sidebar = () => {
             );
           })}
         </List>
+
+        {/* Admin section — visible to Admin role only */}
+        {isAdmin && (
+          <>
+            <Divider sx={{ my: 1.5 }} />
+            <Typography
+              variant="caption"
+              color="text.disabled"
+              sx={{ px: 2, display: 'block', mb: 0.5, textTransform: 'uppercase', letterSpacing: '0.5px' }}
+            >
+              Admin
+            </Typography>
+            <List sx={{ p: 0 }}>
+              <ListItemButton
+                onClick={() => navigate(ROUTE_PATHS.ADMIN_USERS)}
+                selected={isActive(ROUTE_PATHS.ADMIN_USERS)}
+                sx={{
+                  borderRadius: '8px',
+                  mb: 0.5,
+                  px: 2,
+                  py: 1.25,
+                  transition: 'all 150ms ease-in-out',
+                  '&.Mui-selected': {
+                    backgroundColor: theme.palette.mode === 'dark'
+                      ? 'rgba(93, 135, 255, 0.15)'
+                      : 'rgba(93, 135, 255, 0.08)',
+                    color: theme.palette.primary.main,
+                  },
+                  '&:hover': {
+                    backgroundColor: theme.palette.mode === 'dark'
+                      ? 'rgba(255, 255, 255, 0.05)'
+                      : 'rgba(0, 0, 0, 0.04)',
+                  },
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 40,
+                    color: isActive(ROUTE_PATHS.ADMIN_USERS)
+                      ? theme.palette.primary.main
+                      : theme.palette.text.secondary,
+                  }}
+                >
+                  <AdminIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Users"
+                  primaryTypographyProps={{
+                    fontSize: '0.9375rem',
+                    fontWeight: isActive(ROUTE_PATHS.ADMIN_USERS) ? 600 : 500,
+                  }}
+                />
+              </ListItemButton>
+            </List>
+          </>
+        )}
       </Box>
 
       {/* Footer */}

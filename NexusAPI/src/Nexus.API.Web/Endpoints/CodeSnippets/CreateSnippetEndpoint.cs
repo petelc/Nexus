@@ -69,6 +69,13 @@ public class CreateSnippetEndpoint : EndpointWithoutRequest
       return;
     }
 
+    if (request.WorkspaceId == Guid.Empty)
+    {
+      HttpContext.Response.StatusCode = 400;
+      await HttpContext.Response.WriteAsJsonAsync(new { error = "WorkspaceId is required" }, ct);
+      return;
+    }
+
     try
     {
       // Create title value object
@@ -81,7 +88,7 @@ public class CreateSnippetEndpoint : EndpointWithoutRequest
         request.LanguageVersion);
 
       // Create snippet
-      var snippet = CodeSnippet.Create(title, request.Code, language, userId);
+      var snippet = CodeSnippet.Create(title, request.Code, language, userId, request.WorkspaceId);
 
       // Add description if provided
       if (!string.IsNullOrWhiteSpace(request.Description))

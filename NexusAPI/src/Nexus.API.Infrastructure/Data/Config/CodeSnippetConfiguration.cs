@@ -67,6 +67,9 @@ public class CodeSnippetConfiguration : IEntityTypeConfiguration<CodeSnippet>
     builder.Property(cs => cs.OriginalSnippetId)
       .IsRequired(false);
 
+    builder.Property(cs => cs.WorkspaceId)
+      .IsRequired(false);
+
     builder.Property(cs => cs.IsDeleted)
       .IsRequired();
 
@@ -145,6 +148,10 @@ public class CodeSnippetConfiguration : IEntityTypeConfiguration<CodeSnippet>
     builder.HasIndex(cs => cs.OriginalSnippetId)
       .HasDatabaseName("IX_CodeSnippets_OriginalSnippetId")
       .HasFilter("[OriginalSnippetId] IS NOT NULL");
+
+    builder.HasIndex(cs => cs.WorkspaceId)
+      .HasDatabaseName("IX_CodeSnippets_WorkspaceId")
+      .HasFilter("[WorkspaceId] IS NOT NULL AND [IsDeleted] = 0");
 
     // Ignore domain events
     builder.Ignore(cs => cs.DomainEvents);

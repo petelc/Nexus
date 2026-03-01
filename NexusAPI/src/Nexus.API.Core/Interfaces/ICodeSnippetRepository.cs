@@ -15,6 +15,8 @@ public interface ICodeSnippetRepository
   Task<IEnumerable<CodeSnippet>> SearchAsync(string searchTerm, CancellationToken cancellationToken = default);
   Task<int> CountByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
   Task<int> CountPublicSnippetsAsync(CancellationToken cancellationToken = default);
+  Task<IEnumerable<CodeSnippet>> GetByWorkspaceIdAsync(Guid workspaceId, CancellationToken cancellationToken = default);
+  Task<int> CountByWorkspaceIdAsync(Guid workspaceId, CancellationToken cancellationToken = default);
 
   // CRUD operations
   Task<CodeSnippet> AddAsync(CodeSnippet entity, CancellationToken cancellationToken = default);

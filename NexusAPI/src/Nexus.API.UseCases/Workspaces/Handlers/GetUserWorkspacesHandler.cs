@@ -15,13 +15,22 @@ public class GetUserWorkspacesHandler : IRequestHandler<GetUserWorkspacesQuery, 
 {
   private readonly IWorkspaceRepository _workspaceRepository;
   private readonly ICurrentUserService _currentUserService;
+  private readonly IDocumentRepository _documentRepository;
+  private readonly ICodeSnippetRepository _snippetRepository;
+  private readonly IDiagramRepository _diagramRepository;
 
   public GetUserWorkspacesHandler(
     IWorkspaceRepository workspaceRepository,
-    ICurrentUserService currentUserService)
+    ICurrentUserService currentUserService,
+    IDocumentRepository documentRepository,
+    ICodeSnippetRepository snippetRepository,
+    IDiagramRepository diagramRepository)
   {
     _workspaceRepository = workspaceRepository;
     _currentUserService = currentUserService;
+    _documentRepository = documentRepository;
+    _snippetRepository = snippetRepository;
+    _diagramRepository = diagramRepository;
   }
 
   public async Task<Result<List<WorkspaceDto>>> Handle(
@@ -37,19 +46,30 @@ public class GetUserWorkspacesHandler : IRequestHandler<GetUserWorkspacesQuery, 
       UserId.Create(userId.Value),
       cancellationToken);
 
-    // Map to DTOs
-    var dtos = workspaces.Select(w => new WorkspaceDto
+    // Map to DTOs with content counts
+    var dtos = new List<WorkspaceDto>();
+    foreach (var w in workspaces)
     {
-      WorkspaceId = w.Id.Value,
-      Name = w.Name,
-      Description = w.Description,
-      TeamId = w.TeamId.Value,
-      CreatedBy = w.CreatedBy.Value,
-      CreatedAt = w.CreatedAt,
-      UpdatedAt = w.UpdatedAt,
-      MemberCount = w.Members.Count(m => m.IsActive),
-      Members = new List<WorkspaceMemberDto>() // Don't include members in list view
-    }).ToList();
+      var docCount = await _documentRepository.CountByWorkspaceIdAsync(w.Id.Value, cancellationToken);
+      var snippetCount = await _snippetRepository.CountByWorkspaceIdAsync(w.Id.Value, cancellationToken);
+      var diagramCount = await _diagramRepository.CountByWorkspaceIdAsync(w.Id.Value, cancellationToken);
+
+      dtos.Add(new WorkspaceDto
+      {
+        WorkspaceId = w.Id.Value,
+        Name = w.Name,
+        Description = w.Description,
+        TeamId = w.TeamId.Value,
+        CreatedBy = w.CreatedBy.Value,
+        CreatedAt = w.CreatedAt,
+        UpdatedAt = w.UpdatedAt,
+        MemberCount = w.Members.Count(m => m.IsActive),
+        DocumentCount = docCount,
+        SnippetCount = snippetCount,
+        DiagramCount = diagramCount,
+        Members = new List<WorkspaceMemberDto>() // Don't include members in list view
+      });
+    }
 
     return Result.Success(dtos);
   }

@@ -10,6 +10,7 @@ public record CreateDocumentCommand : IRequest<CreateDocumentResponse>
   public string Title { get; init; } = string.Empty;
   public string Content { get; init; } = string.Empty;
   public string Status { get; init; } = "draft";
+  public Guid WorkspaceId { get; init; }
   public Guid? CollectionId { get; init; }
   public List<string> Tags { get; init; } = new();
 }

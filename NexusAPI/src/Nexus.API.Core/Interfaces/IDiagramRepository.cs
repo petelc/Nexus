@@ -33,6 +33,10 @@ public interface IDiagramRepository
 
   // Count
   Task<int> CountByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
+  Task<int> CountByWorkspaceIdAsync(Guid workspaceId, CancellationToken cancellationToken = default);
+
+  // Workspace
+  Task<List<Diagram>> GetByWorkspaceIdAsync(Guid workspaceId, CancellationToken cancellationToken = default);
 
   // Existence check
   Task<bool> ExistsAsync(DiagramId id, CancellationToken cancellationToken = default);

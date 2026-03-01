@@ -12,7 +12,7 @@ import { baseQueryWithReauth } from './baseQueryWithReauth';
 export const documentsApi = createApi({
   reducerPath: 'documentsApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Document', 'DocumentVersions'],
+  tagTypes: ['Document', 'DocumentVersions', 'Workspace'],
   endpoints: (builder) => ({
     // Get all documents with filtering
     getDocuments: builder.query<PaginatedResultDto<DocumentDto>, DocumentFilterDto>({
@@ -61,7 +61,7 @@ export const documentsApi = createApi({
         method: 'POST',
         body: document,
       }),
-      invalidatesTags: [{ type: 'Document', id: 'LIST' }],
+      invalidatesTags: [{ type: 'Document', id: 'LIST' }, { type: 'Workspace', id: 'LIST' }],
     }),
 
     // Update document
@@ -83,9 +83,10 @@ export const documentsApi = createApi({
         url: `/documents/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: 'Document', id },
         { type: 'Document', id: 'LIST' },
+        { type: 'Workspace', id: 'LIST' },
       ],
     }),
 

@@ -34,6 +34,16 @@ public interface IDocumentRepository : IRepository<Document>
     Task<IEnumerable<Document>> GetByTagAsync(string tagName, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Get documents in a specific workspace, ordered by most recently updated
+    /// </summary>
+    Task<IEnumerable<Document>> GetByWorkspaceIdAsync(Guid workspaceId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Count non-deleted documents in a workspace
+    /// </summary>
+    Task<int> CountByWorkspaceIdAsync(Guid workspaceId, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Add a document to the repository
     /// </summary>
     new Task<Document> AddAsync(Document document, CancellationToken cancellationToken = default);

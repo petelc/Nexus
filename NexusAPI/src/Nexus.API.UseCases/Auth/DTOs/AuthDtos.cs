@@ -22,7 +22,8 @@ public record UserDto(
   string? Theme = null,
   string? Language = null,
   bool? NotificationsEnabled = null,
-  string? EmailDigest = null);
+  string? EmailDigest = null,
+  IList<string>? Roles = null);
 
 public record RegisterRequestDto(
   string Email,

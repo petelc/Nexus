@@ -69,4 +69,23 @@ public class DocumentRepository : RepositoryBase<Document>, IDocumentRepository
       .ToListAsync(cancellationToken);
   }
 
+  public async Task<IEnumerable<Document>> GetByWorkspaceIdAsync(
+    Guid workspaceId,
+    CancellationToken cancellationToken = default)
+  {
+    return await _dbContext.Documents
+      .Include(d => d.Tags)
+      .Where(d => d.WorkspaceId == workspaceId && !d.IsDeleted)
+      .OrderByDescending(d => d.UpdatedAt)
+      .ToListAsync(cancellationToken);
+  }
+
+  public async Task<int> CountByWorkspaceIdAsync(
+    Guid workspaceId,
+    CancellationToken cancellationToken = default)
+  {
+    return await _dbContext.Documents
+      .CountAsync(d => d.WorkspaceId == workspaceId && !d.IsDeleted, cancellationToken);
+  }
+
 }

@@ -33,7 +33,7 @@ public class CreateDocumentHandler : IRequestHandler<CreateDocumentCommand, Crea
     //var content = new DocumentContent(request.Content); 
     var content = DocumentContent.Create(request.Content);
 
-    var document = Document.Create(title, content, userId);
+    var document = Document.Create(title, content, userId, request.WorkspaceId);
 
     // Add tags if provided
     foreach (var tagName in request.Tags)

@@ -8,6 +8,7 @@ namespace Nexus.API.UnitTests.Core.DocumentAggregate;
 public class DocumentTests
 {
   private readonly Guid _creatorId = Guid.NewGuid();
+  private readonly Guid _workspaceId = Guid.NewGuid();
 
   private Document CreateDocument(
     string title = "Test Document",
@@ -16,7 +17,8 @@ public class DocumentTests
     return Document.Create(
       Title.Create(title),
       DocumentContent.Create(content),
-      _creatorId);
+      _creatorId,
+      _workspaceId);
   }
 
   // ─── Create ────────────────────────────────────────────────────────
@@ -69,6 +71,7 @@ public class DocumentTests
       Title.Create("Doc"),
       DocumentContent.Create("<p>content</p>"),
       _creatorId,
+      _workspaceId,
       "fr-FR");
 
     doc.LanguageCode.ShouldBe("fr-FR");
@@ -81,7 +84,8 @@ public class DocumentTests
       Document.Create(
         Title.Create("Doc"),
         DocumentContent.Create("<p>content</p>"),
-        Guid.Empty));
+        Guid.Empty,
+        _workspaceId));
   }
 
   // ─── UpdateTitle ───────────────────────────────────────────────────

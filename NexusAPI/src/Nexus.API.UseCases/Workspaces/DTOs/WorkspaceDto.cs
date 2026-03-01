@@ -13,5 +13,8 @@ public class WorkspaceDto
   public DateTime CreatedAt { get; set; }
   public DateTime UpdatedAt { get; set; }
   public int MemberCount { get; set; }
+  public int DocumentCount { get; set; }
+  public int SnippetCount { get; set; }
+  public int DiagramCount { get; set; }
   public List<WorkspaceMemberDto> Members { get; set; } = new();
 }

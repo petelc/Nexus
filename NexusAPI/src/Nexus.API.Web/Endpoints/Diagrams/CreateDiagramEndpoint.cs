@@ -67,6 +67,13 @@ public class CreateDiagramEndpoint : EndpointWithoutRequest
       return;
     }
 
+    if (request.WorkspaceId == Guid.Empty)
+    {
+      HttpContext.Response.StatusCode = 400;
+      await HttpContext.Response.WriteAsJsonAsync(new { error = "WorkspaceId is required" }, ct);
+      return;
+    }
+
     // Parse diagram type
     if (!Enum.TryParse<DiagramType>(request.DiagramType, true, out var diagramType))
     {
@@ -90,7 +97,7 @@ public class CreateDiagramEndpoint : EndpointWithoutRequest
         : DiagramCanvas.CreateDefault();
 
       // Create diagram
-      var diagram = Diagram.Create(title, diagramType, userId, canvas);
+      var diagram = Diagram.Create(title, diagramType, userId, request.WorkspaceId, canvas);
 
       // Save diagram
       await _diagramRepository.AddAsync(diagram, ct);

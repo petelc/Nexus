@@ -9,6 +9,9 @@ public class CreateDocumentValidator : AbstractValidator<CreateDocumentCommand>
 {
   public CreateDocumentValidator()
   {
+    RuleFor(x => x.WorkspaceId)
+      .NotEmpty().WithMessage("WorkspaceId is required");
+
     RuleFor(x => x.Title)
       .NotEmpty().WithMessage("Title is required")
       .MaximumLength(200).WithMessage("Title cannot exceed 200 characters");

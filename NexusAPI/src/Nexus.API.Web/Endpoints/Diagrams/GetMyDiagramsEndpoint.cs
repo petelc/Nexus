@@ -62,20 +62,40 @@ public class GetMyDiagramsEndpoint : EndpointWithoutRequest
 
     pageSize = Math.Min(pageSize, 100); // Max 100 items per page
 
+    // Parse optional workspaceId filter
+    var workspaceIdStr = HttpContext.Request.Query["workspaceId"].FirstOrDefault();
+    Guid? workspaceId = null;
+    if (!string.IsNullOrEmpty(workspaceIdStr) && Guid.TryParse(workspaceIdStr, out var parsedWorkspaceId))
+    {
+      workspaceId = parsedWorkspaceId;
+    }
+
     try
     {
-      // Call repository with correct parameters based on actual signature
-      // Assuming GetPagedAsync(int page, int pageSize, Guid? createdBy, DiagramType? type, CancellationToken)
-      var pagedResult = await _diagramRepository.GetPagedAsync(page, pageSize, userId, null, ct);
+      List<Nexus.API.Core.Aggregates.DiagramAggregate.Diagram> pagedItems;
+      int totalCount;
+
+      if (workspaceId.HasValue)
+      {
+        var workspaceDiagrams = await _diagramRepository.GetByWorkspaceIdAsync(workspaceId.Value, ct);
+        totalCount = workspaceDiagrams.Count;
+        pagedItems = workspaceDiagrams.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+      }
+      else
+      {
+        var pagedResult = await _diagramRepository.GetPagedAsync(page, pageSize, userId, null, ct);
+        pagedItems = pagedResult.Items;
+        totalCount = pagedResult.TotalCount;
+      }
 
       // Get username for response
       var user = await _userManager.FindByIdAsync(userId.ToString());
       var username = user?.UserName ?? "Unknown";
 
-      var totalPages = (int)Math.Ceiling((double)pagedResult.TotalCount / pageSize);
+      var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
       var response = new DiagramPagedResultDto
       {
-        Items = pagedResult.Items.Select(d => new DiagramListItemDto
+        Items = pagedItems.Select(d => new DiagramListItemDto
         {
           DiagramId = d.Id.Value,
           Title = d.Title.Value,
@@ -88,7 +108,7 @@ public class GetMyDiagramsEndpoint : EndpointWithoutRequest
         }).ToList(),
         Page = page,
         PageSize = pageSize,
-        TotalCount = pagedResult.TotalCount,
+        TotalCount = totalCount,
         TotalPages = totalPages,
         HasNextPage = page < totalPages,
         HasPreviousPage = page > 1

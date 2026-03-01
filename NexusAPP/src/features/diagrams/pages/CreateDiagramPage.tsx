@@ -21,6 +21,7 @@ import { z } from 'zod';
 import { useCreateDiagramMutation } from '@api/diagramsApi';
 import type { DiagramType } from '@/types/api.types';
 import { ROUTE_PATHS, buildRoute } from '@routes/routePaths';
+import { useAppSelector } from '@app/hooks';
 
 const DIAGRAM_TYPES: { value: DiagramType; label: string }[] = [
   { value: 'Flowchart', label: 'Flowchart' },
@@ -41,6 +42,7 @@ type FormValues = z.infer<typeof schema>;
 
 export const CreateDiagramPage = () => {
   const navigate = useNavigate();
+  const currentWorkspaceId = useAppSelector((state) => state.workspaces.currentWorkspaceId);
   const [createDiagram, { isLoading, isError }] = useCreateDiagramMutation();
 
   const {
@@ -58,9 +60,13 @@ export const CreateDiagramPage = () => {
   });
 
   const onSubmit = async (values: FormValues) => {
+    if (!currentWorkspaceId) {
+      return;
+    }
     const result = await createDiagram({
       title: values.title,
       diagramType: values.diagramType,
+      workspaceId: currentWorkspaceId,
       canvas: {
         width: values.width ?? 1920,
         height: values.height ?? 1080,
@@ -92,6 +98,11 @@ export const CreateDiagramPage = () => {
       </Typography>
 
       <Paper sx={{ p: 3, maxWidth: 600 }}>
+        {!currentWorkspaceId && (
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            Please select a workspace before creating a diagram.
+          </Alert>
+        )}
         {isError && (
           <Alert severity="error" sx={{ mb: 2 }}>
             Failed to create diagram. Please try again.
@@ -183,7 +194,7 @@ export const CreateDiagramPage = () => {
             <Button
               type="submit"
               variant="contained"
-              disabled={isLoading}
+              disabled={isLoading || !currentWorkspaceId}
               startIcon={isLoading ? <CircularProgress size={16} /> : undefined}
             >
               {isLoading ? 'Creating...' : 'Create & Open Editor'}

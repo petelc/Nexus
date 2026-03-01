@@ -9,6 +9,7 @@ public class CreateDiagramRequest
   public string DiagramType { get; set; } = "Flowchart"; // Flowchart, Network, UML, ERD, Custom
   public DiagramCanvasDto? Canvas { get; set; }
   public Guid? CollectionId { get; set; }
+  public Guid WorkspaceId { get; set; }
 }
 
 /// <summary>

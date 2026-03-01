@@ -53,6 +53,9 @@ export const ROUTE_PATHS = {
   SETTINGS: '/settings',
   PROFILE: '/settings/profile',
 
+  // Admin
+  ADMIN_USERS: '/admin/users',
+
   // Errors
   NOT_FOUND: '/404',
 } as const;

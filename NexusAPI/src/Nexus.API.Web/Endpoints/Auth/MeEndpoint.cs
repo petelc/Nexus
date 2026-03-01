@@ -49,6 +49,8 @@ public class MeEndpoint : EndpointWithoutRequest
       return;
     }
 
+    var roles = await _userManager.GetRolesAsync(user);
+
     HttpContext.Response.StatusCode = StatusCodes.Status200OK;
     await HttpContext.Response.WriteAsJsonAsync(new UserDto(
       user.Id,
@@ -65,6 +67,7 @@ public class MeEndpoint : EndpointWithoutRequest
       user.Theme,
       user.Language,
       user.NotificationsEnabled,
-      user.EmailDigest), ct);
+      user.EmailDigest,
+      roles), ct);
   }
 }

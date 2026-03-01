@@ -25,6 +25,7 @@ public class CodeSnippet : EntityBase<Guid>, IAggregateRoot
   public DateTime CreatedAt { get; private set; }
   public DateTime UpdatedAt { get; private set; }
   public SnippetMetadata Metadata { get; private set; } = null!;
+  public Guid? WorkspaceId { get; private set; }
   public Guid? OriginalSnippetId { get; private set; }
   public bool IsDeleted { get; private set; }
   public DateTime? DeletedAt { get; private set; }
@@ -43,7 +44,8 @@ public class CodeSnippet : EntityBase<Guid>, IAggregateRoot
     Title title,
     string code,
     ProgrammingLanguage language,
-    Guid createdBy)
+    Guid createdBy,
+    Guid? workspaceId = null)
   {
     Guard.Against.Null(title, nameof(title));
     Guard.Against.NullOrWhiteSpace(code, nameof(code));
@@ -56,6 +58,7 @@ public class CodeSnippet : EntityBase<Guid>, IAggregateRoot
       Code = code,
       Language = language,
       CreatedBy = createdBy,
+      WorkspaceId = workspaceId,
       CreatedAt = DateTime.UtcNow,
       UpdatedAt = DateTime.UtcNow,
       Metadata = SnippetMetadata.Create(code, isPublic: false),
@@ -151,7 +154,7 @@ public class CodeSnippet : EntityBase<Guid>, IAggregateRoot
     // Sharing the same Language reference would cause EF Core to try to reassign
     // the shadow CodeSnippetId key when the fork is tracked, throwing an exception.
     var forkLanguage = ProgrammingLanguage.Create(Language.Name, Language.FileExtension, Language.Version);
-    var fork = Create(newTitle, Code, forkLanguage, userId);
+    var fork = Create(newTitle, Code, forkLanguage, userId, WorkspaceId);
     fork.OriginalSnippetId = Id;
 
     if (!string.IsNullOrEmpty(Description))
