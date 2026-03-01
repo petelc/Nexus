@@ -39,7 +39,7 @@ public class SearchCollectionsEndpoint : EndpointWithoutRequest
       return;
     }
 
-    var searchTerm = Query<string>("searchTerm") ?? string.Empty;
+    var searchTerm = Query<string?>("searchTerm", isRequired: false) ?? string.Empty;
 
     var query = new SearchCollectionsQuery
     {

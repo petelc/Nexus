@@ -40,7 +40,7 @@ public class GetCollectionByIdEndpoint : EndpointWithoutRequest
       return;
     }
 
-    var includeItems = Query<bool?>("includeItems") ?? true;
+    var includeItems = Query<bool?>("includeItems", isRequired: false) ?? true;
 
     var query = new GetCollectionByIdQuery
     {
