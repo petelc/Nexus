@@ -117,7 +117,7 @@ export const CreateWorkspaceDialog = () => {
               <Autocomplete
                 options={teams || []}
                 value={teams?.find(t => t.id === field.value) || null}
-                onChange={(event, newValue) => {
+                onChange={(_event, newValue) => {
                   field.onChange(newValue?.id || '');
                 }}
                 getOptionLabel={(option) => option.name}

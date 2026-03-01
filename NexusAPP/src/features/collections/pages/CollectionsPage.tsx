@@ -47,7 +47,7 @@ export const CollectionsPage = () => {
   const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const currentWorkspaceId = useAppSelector((state) => state.workspaces.currentWorkspaceId);
-  const { data: workspaces = [] } = useGetMyWorkspacesQuery();
+  const { data: workspaces = [] } = useGetMyWorkspacesQuery({});
 
   const workspaceId = selectedWorkspaceId ?? currentWorkspaceId ?? workspaces[0]?.workspaceId ?? '';
 

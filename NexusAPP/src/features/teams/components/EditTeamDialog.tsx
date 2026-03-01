@@ -13,7 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEffect } from 'react';
 import { useUpdateTeamMutation } from '@api/teamsApi';
-import type { TeamDto } from '@types/api.types';
+import type { TeamDto } from '@/types/api.types';
 
 const teamSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100, 'Name is too long'),

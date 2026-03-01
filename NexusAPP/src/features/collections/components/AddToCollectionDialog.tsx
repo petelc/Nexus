@@ -39,7 +39,7 @@ export const AddToCollectionDialog = ({
   const [selectedCollectionId, setSelectedCollectionId] = useState('');
   const [error, setError] = useState('');
 
-  const { data: workspaces = [] } = useGetMyWorkspacesQuery();
+  const { data: workspaces = [] } = useGetMyWorkspacesQuery({});
 
   const { data: collections = [], isFetching: collectionsLoading } = useGetRootCollectionsQuery(
     selectedWorkspaceId,

@@ -10,7 +10,7 @@ import { Reply as ReplyIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { useState } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import type { CommentDto } from '@types/api.types';
+import type { CommentDto } from '@/types/api.types';
 import { CommentBox } from './CommentBox';
 
 dayjs.extend(relativeTime);

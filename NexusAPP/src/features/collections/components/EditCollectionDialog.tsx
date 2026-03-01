@@ -10,7 +10,7 @@ import {
   Alert,
 } from '@mui/material';
 import { useUpdateCollectionMutation } from '@api/collectionsApi';
-import type { CollectionDto } from '@types/api.types';
+import type { CollectionDto } from '@/types/api.types';
 
 interface EditCollectionDialogProps {
   open: boolean;

@@ -32,7 +32,7 @@ import {
 } from '@api/teamsApi';
 import { useAppDispatch, useAppSelector } from '@app/hooks';
 import { closeTeamMembers } from '../teamsSlice';
-import { TeamRole } from '@types/api.types';
+import { TeamRole } from '@/types/api.types';
 
 function getInitials(username?: string): string {
   if (!username) return '?';

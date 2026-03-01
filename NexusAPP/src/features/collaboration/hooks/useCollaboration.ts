@@ -23,7 +23,7 @@ import type {
   RealtimeCursorDto,
   SessionStatusDto,
   SessionSyncDto,
-} from '@types/api.types';
+} from '@/types/api.types';
 
 export function useCollaboration(resourceId: string, resourceType: 'Document' | 'Diagram') {
   const dispatch = useAppDispatch();

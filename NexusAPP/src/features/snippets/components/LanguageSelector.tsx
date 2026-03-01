@@ -1,5 +1,4 @@
 import { Autocomplete, TextField, Chip, Box } from '@mui/material';
-import { Code as CodeIcon } from '@mui/icons-material';
 
 // Popular programming languages supported by Monaco Editor
 export const PROGRAMMING_LANGUAGES = [

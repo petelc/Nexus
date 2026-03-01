@@ -37,7 +37,7 @@ import { WorkspaceCard } from '@features/workspaces/components/WorkspaceCard';
 import { EditTeamDialog } from '../components/EditTeamDialog';
 import { useAppSelector } from '@app/hooks';
 import { ROUTE_PATHS } from '@routes/routePaths';
-import { TeamRole } from '@types/api.types';
+import { TeamRole } from '@/types/api.types';
 
 dayjs.extend(relativeTime);
 

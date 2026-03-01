@@ -32,7 +32,7 @@ import {
   WorkspaceRole,
 } from '@api/workspacesApi';
 import { useAppSelector } from '@app/hooks';
-import type { WorkspaceDto } from '@types/api.types';
+import type { WorkspaceDto } from '@/types/api.types';
 
 function getInitials(username?: string): string {
   if (!username) return '?';

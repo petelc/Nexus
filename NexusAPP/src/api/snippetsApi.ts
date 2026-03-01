@@ -40,7 +40,7 @@ export const snippetsApi = createApi({
     // Get snippet by ID
     getSnippetById: builder.query<CodeSnippetDto, string>({
       query: (id) => `/snippets/${id}`,
-      providesTags: (result, error, id) => [{ type: 'Snippet', id }],
+      providesTags: (_result, _error, id) => [{ type: 'Snippet', id }],
     }),
 
     // Create snippet
@@ -60,7 +60,7 @@ export const snippetsApi = createApi({
         method: 'PUT',
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'Snippet', id },
         { type: 'Snippet', id: 'LIST' },
       ],
@@ -139,7 +139,7 @@ export const snippetsApi = createApi({
         url: `/snippets/${id}/publish`,
         method: 'POST',
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: 'Snippet', id },
         { type: 'Snippet', id: 'LIST' },
         'PublicSnippets',
@@ -152,7 +152,7 @@ export const snippetsApi = createApi({
         url: `/snippets/${id}/unpublish`,
         method: 'POST',
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: 'Snippet', id },
         { type: 'Snippet', id: 'LIST' },
         'PublicSnippets',

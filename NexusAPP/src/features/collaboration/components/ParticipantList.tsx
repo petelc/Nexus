@@ -1,5 +1,5 @@
 import { Avatar, AvatarGroup, Box, Tooltip, Typography } from '@mui/material';
-import type { ParticipantInfoDto } from '@types/api.types';
+import type { ParticipantInfoDto } from '@/types/api.types';
 
 function getInitials(fullName: string, username: string): string {
   if (fullName && fullName !== 'Unknown User') {

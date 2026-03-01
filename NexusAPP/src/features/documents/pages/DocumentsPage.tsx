@@ -15,7 +15,6 @@ import {
   CircularProgress,
   Alert,
   Pagination,
-  Chip,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -43,7 +42,7 @@ import {
   setSelectedDocument,
   type DocumentTabType,
 } from '../documentsSlice';
-import { ROUTE_PATHS, buildRoute } from '@routes/routePaths';
+import { ROUTE_PATHS } from '@routes/routePaths';
 import type { DocumentDto } from '@/types/api.types';
 
 export const DocumentsPage = () => {
@@ -55,7 +54,6 @@ export const DocumentsPage = () => {
   const filters = useAppSelector((state) => state.documents.filters);
   const showVersionHistory = useAppSelector((state) => state.documents.showVersionHistory);
   const selectedDocumentId = useAppSelector((state) => state.documents.selectedDocumentId);
-  const favoriteIds = useAppSelector((state) => state.documents.favoriteDocumentIds);
 
   const [sortAnchorEl, setSortAnchorEl] = useState<null | HTMLElement>(null);
   const [searchInput, setSearchInput] = useState(filters.searchTerm || '');

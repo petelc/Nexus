@@ -9,7 +9,7 @@ export interface ThemeMode {
 export interface NavItem {
   id: string;
   label: string;
-  icon?: React.ComponentType;
+  icon?: React.ElementType;
   path?: string;
   children?: NavItem[];
   badge?: string | number;

@@ -11,8 +11,6 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
-  Avatar,
-  AvatarGroup,
 } from '@mui/material';
 import {
   MoreVert as MoreVertIcon,
@@ -24,7 +22,7 @@ import {
 import { useState } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import type { TeamDto } from '@types/api.types';
+import type { TeamDto } from '@/types/api.types';
 import { useAppSelector } from '@app/hooks';
 
 dayjs.extend(relativeTime);

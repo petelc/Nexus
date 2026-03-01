@@ -7,7 +7,7 @@ import type {
   UpdateCollectionDto,
   AddItemToCollectionDto,
   ReorderCollectionItemDto,
-} from '@types/api.types';
+} from '@/types/api.types';
 import { baseQueryWithReauth } from './baseQueryWithReauth';
 
 // Backend wraps list responses in envelope objects

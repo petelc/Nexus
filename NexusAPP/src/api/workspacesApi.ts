@@ -4,7 +4,7 @@ import type {
   CreateWorkspaceDto,
   UpdateWorkspaceDto,
   UserDto,
-} from '@types/api.types';
+} from '@/types/api.types';
 import { baseQueryWithReauth } from './baseQueryWithReauth';
 
 export interface WorkspaceMemberDto {
@@ -122,7 +122,7 @@ export const workspacesApi = createApi({
         method: 'PUT',
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'Workspace', id },
         { type: 'Workspace', id: 'LIST' },
       ],
@@ -134,7 +134,7 @@ export const workspacesApi = createApi({
         url: `/workspaces/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: 'Workspace', id },
         { type: 'Workspace', id: 'LIST' },
       ],
@@ -147,7 +147,7 @@ export const workspacesApi = createApi({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'WorkspaceMember', id },
         { type: 'Workspace', id },
       ],
@@ -159,7 +159,7 @@ export const workspacesApi = createApi({
         url: `/workspaces/${id}/members/${userId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'WorkspaceMember', id },
         { type: 'Workspace', id },
       ],
@@ -172,7 +172,7 @@ export const workspacesApi = createApi({
         method: 'PUT',
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'WorkspaceMember', id },
         { type: 'Workspace', id },
       ],

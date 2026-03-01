@@ -146,7 +146,7 @@ export const DiagramDetailPage = () => {
             isInSession={collab.isInSession}
             isConnecting={collab.isConnecting}
             panelOpen={collab.panelOpen}
-            onStart={collab.startOrJoinSession}
+            onStart={async () => { await collab.startOrJoinSession(); }}
             onTogglePanel={() => dispatch(setPanelOpen(!collab.panelOpen))}
           />
           <Button

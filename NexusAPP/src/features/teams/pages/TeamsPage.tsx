@@ -32,7 +32,7 @@ import {
   setShowCreateDialog,
   openTeamMembers,
 } from '../teamsSlice';
-import type { TeamDto } from '@types/api.types';
+import type { TeamDto } from '@/types/api.types';
 
 export const TeamsPage = () => {
   const dispatch = useAppDispatch();

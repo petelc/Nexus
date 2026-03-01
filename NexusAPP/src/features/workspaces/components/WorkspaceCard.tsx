@@ -25,7 +25,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import type { WorkspaceDto } from '@types/api.types';
+import type { WorkspaceDto } from '@/types/api.types';
 import { useAppDispatch, useAppSelector } from '@app/hooks';
 import { setCurrentWorkspace } from '../workspacesSlice';
 

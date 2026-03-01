@@ -6,7 +6,7 @@ import type {
   CreateTeamDto,
   InviteTeamMemberDto,
   PaginatedResultDto,
-} from '@types/api.types';
+} from '@/types/api.types';
 import { baseQueryWithReauth } from './baseQueryWithReauth';
 
 export interface UpdateTeamDto {
@@ -50,13 +50,13 @@ export const teamsApi = createApi({
     // Get team by ID
     getTeamById: builder.query<TeamDto, string>({
       query: (id) => `/teams/${id}`,
-      providesTags: (result, error, id) => [{ type: 'Team', id }],
+      providesTags: (_result, _error, id) => [{ type: 'Team', id }],
     }),
 
     // Get team with members
     getTeamWithMembers: builder.query<TeamWithMembers, string>({
       query: (id) => `/teams/${id}`,
-      providesTags: (result, error, id) => [
+      providesTags: (_result, _error, id) => [
         { type: 'Team', id },
         { type: 'TeamMember', id },
       ],
@@ -94,7 +94,7 @@ export const teamsApi = createApi({
         method: 'PUT',
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'Team', id },
         { type: 'Team', id: 'LIST' },
       ],
@@ -106,7 +106,7 @@ export const teamsApi = createApi({
         url: `/teams/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: 'Team', id },
         { type: 'Team', id: 'LIST' },
       ],
@@ -119,7 +119,7 @@ export const teamsApi = createApi({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'TeamMember', id },
         { type: 'Team', id },
       ],
@@ -131,7 +131,7 @@ export const teamsApi = createApi({
         url: `/teams/${id}/members/${userId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'TeamMember', id },
         { type: 'Team', id },
       ],
@@ -144,7 +144,7 @@ export const teamsApi = createApi({
         method: 'PUT',
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'TeamMember', id },
         { type: 'Team', id },
       ],

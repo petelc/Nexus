@@ -13,7 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEffect } from 'react';
 import { useUpdateWorkspaceMutation } from '@api/workspacesApi';
-import type { WorkspaceDto } from '@types/api.types';
+import type { WorkspaceDto } from '@/types/api.types';
 
 const workspaceSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100, 'Name is too long'),

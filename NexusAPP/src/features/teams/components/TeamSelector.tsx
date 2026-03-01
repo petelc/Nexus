@@ -7,7 +7,6 @@ import {
   CircularProgress,
   Box,
   Typography,
-  type SelectChangeEvent,
 } from '@mui/material';
 import { useGetMyTeamsQuery } from '@api/teamsApi';
 

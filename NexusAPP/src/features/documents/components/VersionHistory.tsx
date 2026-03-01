@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import {
   Restore as RestoreIcon,
-  Visibility as ViewIcon,
 } from '@mui/icons-material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';

@@ -23,7 +23,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import type { CollectionSummaryDto } from '@types/api.types';
+import type { CollectionSummaryDto } from '@/types/api.types';
 import { buildRoute } from '@routes/routePaths';
 
 dayjs.extend(relativeTime);

@@ -22,7 +22,7 @@ import { ParticipantList } from './ParticipantList';
 import { CommentThread } from './CommentThread';
 import { CommentBox } from './CommentBox';
 import { useAddCommentMutation, useDeleteCommentMutation, useReplyToCommentMutation } from '@api/collaborationApi';
-import type { CommentDto, ParticipantInfoDto } from '@types/api.types';
+import type { CommentDto, ParticipantInfoDto } from '@/types/api.types';
 
 interface CollaborationPanelProps {
   open: boolean;

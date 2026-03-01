@@ -46,7 +46,7 @@ import { EditCollectionDialog } from '../components/EditCollectionDialog';
 import { ConfirmDialog } from '@components/common/ConfirmDialog';
 import { useAppSelector } from '@app/hooks';
 import { ROUTE_PATHS, buildRoute } from '@routes/routePaths';
-import type { CollectionDto, CollectionSummaryDto, CollectionItemDto } from '@types/api.types';
+import type { CollectionSummaryDto, CollectionItemDto } from '@/types/api.types';
 
 dayjs.extend(relativeTime);
 

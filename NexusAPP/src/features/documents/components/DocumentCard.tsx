@@ -210,7 +210,7 @@ export const DocumentCard = ({
             label={document.status}
             size="small"
             color={getStatusColor(document.status)}
-            icon={getStatusIcon(document.status)}
+            icon={getStatusIcon(document.status) ?? undefined}
           />
           {document.publishedAt && (
             <Typography variant="caption" color="text.secondary">

@@ -51,7 +51,7 @@ export const documentsApi = createApi({
     // Get document by ID
     getDocumentById: builder.query<DocumentDto, string>({
       query: (id) => `/documents/${id}`,
-      providesTags: (result, error, id) => [{ type: 'Document', id }],
+      providesTags: (_result, _error, id) => [{ type: 'Document', id }],
     }),
 
     // Create document
@@ -71,7 +71,7 @@ export const documentsApi = createApi({
         method: 'PUT',
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'Document', id },
         { type: 'Document', id: 'LIST' },
       ],
@@ -96,7 +96,7 @@ export const documentsApi = createApi({
         url: `/documents/${id}/publish`,
         method: 'POST',
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: 'Document', id },
         { type: 'Document', id: 'LIST' },
       ],
@@ -109,7 +109,7 @@ export const documentsApi = createApi({
         method: 'POST',
         body: { tagName },
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Document', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Document', id }],
     }),
 
     // Remove tag from document
@@ -118,13 +118,13 @@ export const documentsApi = createApi({
         url: `/documents/${id}/tags/${tagName}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Document', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Document', id }],
     }),
 
     // Get document versions
     getDocumentVersions: builder.query<DocumentVersionDto[], string>({
       query: (id) => `/documents/${id}/versions`,
-      providesTags: (result, error, id) => [{ type: 'DocumentVersions', id }],
+      providesTags: (_result, _error, id) => [{ type: 'DocumentVersions', id }],
     }),
 
     // Get specific document version
@@ -138,7 +138,7 @@ export const documentsApi = createApi({
         url: `/documents/${id}/versions/${versionNumber}/restore`,
         method: 'POST',
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'Document', id },
         { type: 'DocumentVersions', id },
       ],

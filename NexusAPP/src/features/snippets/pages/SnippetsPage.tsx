@@ -26,7 +26,6 @@ import {
   ViewModule as GridViewIcon,
   ViewList as ListViewIcon,
   Sort as SortIcon,
-  FilterList as FilterIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -48,7 +47,7 @@ import {
 } from '../snippetsSlice';
 import { ROUTE_PATHS, buildRoute } from '@routes/routePaths';
 import { PROGRAMMING_LANGUAGES } from '../components/LanguageSelector';
-import type { CodeSnippetDto } from '@types/api.types';
+import type { CodeSnippetDto } from '@/types/api.types';
 
 export const SnippetsPage = () => {
   const navigate = useNavigate();

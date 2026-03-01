@@ -6,7 +6,7 @@ import type {
   AddCommentDto,
   UpdateCommentDto,
   AddReplyDto,
-} from '@types/api.types';
+} from '@/types/api.types';
 import { baseQueryWithReauth } from './baseQueryWithReauth';
 
 export const collaborationApi = createApi({

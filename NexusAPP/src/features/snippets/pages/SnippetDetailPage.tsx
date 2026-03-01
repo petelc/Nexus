@@ -17,7 +17,6 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   CallSplit as ForkIcon,
-  Share as ShareIcon,
   ArrowBack as ArrowBackIcon,
   Public as PublicIcon,
   Lock as PrivateIcon,

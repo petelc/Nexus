@@ -15,7 +15,6 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
 import { useLoginMutation } from '../authApi';
 import { loginSchema, LoginFormData } from '../validation';
 import { useAppDispatch } from '@app/hooks';

@@ -133,7 +133,6 @@ export const CreateSnippetPage = () => {
   };
 
   const code = watch('code');
-  const tags = watch('tags');
 
   const handleCodeChange = (newCode: string) => {
     setValue('code', newCode);

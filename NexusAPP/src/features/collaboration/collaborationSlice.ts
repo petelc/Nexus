@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { ParticipantInfoDto, RealtimeCursorDto, SessionStatusDto } from '@types/api.types';
+import type { ParticipantInfoDto, RealtimeCursorDto, SessionStatusDto } from '@/types/api.types';
 
 interface CollaborationState {
   // Active session for the current resource being viewed

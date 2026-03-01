@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { SnippetFilterDto } from '@types/api.types';
+import type { SnippetFilterDto } from '@/types/api.types';
 
 export type SnippetViewMode = 'grid' | 'list';
 export type SnippetTabType = 'my-snippets' | 'public' | 'favorites';
