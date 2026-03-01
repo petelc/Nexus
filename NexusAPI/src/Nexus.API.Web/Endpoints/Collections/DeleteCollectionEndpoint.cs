@@ -40,7 +40,7 @@ public class DeleteCollectionEndpoint : EndpointWithoutRequest
       return;
     }
 
-    var force = Query<bool?>("force") ?? false;
+    var force = Query<bool?>("force", isRequired: false) ?? false;
 
     var command = new DeleteCollectionCommand
     {
