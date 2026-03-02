@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { CollectionsPage, CollectionDetailPage } from '../../pages/collections.page';
 import { loginAs, TEST_USER } from '../../fixtures/auth.fixture';
+import { ensureWorkspaceSelected } from '../../utils/workspace.helper';
 
 test.describe('Collections Page', () => {
   let collectionsPage: CollectionsPage;
@@ -9,8 +10,10 @@ test.describe('Collections Page', () => {
     await loginAs(page, TEST_USER.email, TEST_USER.password);
     await page.waitForURL('**/dashboard', { timeout: 10000 });
 
+    // Collections are workspace-scoped — ensure a workspace exists and is selected
+    await ensureWorkspaceSelected(page, '/collections');
+
     collectionsPage = new CollectionsPage(page);
-    await collectionsPage.goto();
   });
 
   test.describe('Page Layout', () => {
@@ -103,8 +106,8 @@ test.describe('Collection Detail Page', () => {
     await loginAs(page, TEST_USER.email, TEST_USER.password);
     await page.waitForURL('**/dashboard', { timeout: 10000 });
 
+    await ensureWorkspaceSelected(page, '/collections');
     collectionsPage = new CollectionsPage(page);
-    await collectionsPage.goto();
   });
 
   test('should navigate to collection detail when clicking a collection card', async ({ page }) => {

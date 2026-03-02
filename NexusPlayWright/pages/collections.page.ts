@@ -25,7 +25,7 @@ export class CollectionsPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.heading = page.getByRole('heading', { name: /collections/i });
+    this.heading = page.getByRole('heading', { name: 'Collections', exact: true });
     this.newCollectionButton = page.getByRole('button', { name: /new collection/i });
     this.searchInput = page.getByPlaceholder(/search collections/i);
     this.viewToggleButton = page.getByRole('button', { name: /view/i });

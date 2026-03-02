@@ -2,14 +2,20 @@ import { test as base, expect, Page } from '@playwright/test';
 
 /**
  * Test user credentials for authentication tests.
- * These should match seeded test data or be created during test setup.
+ * Values read from environment variables (set in .env or shell).
+ * Defaults match the seeded dev database user.
  */
 export const TEST_USER = {
-  email: 'testuser@nexus.dev',
-  password: 'TestPass123!',
+  email: process.env.TEST_USER_EMAIL ?? 'testuser@nexus.dev',
+  password: process.env.TEST_USER_PASSWORD ?? 'TestPass123!',
   firstName: 'Test',
   lastName: 'User',
   username: 'testuser',
+};
+
+export const ADMIN_USER = {
+  email: process.env.ADMIN_USER_EMAIL ?? 'admin@nexus.dev',
+  password: process.env.ADMIN_USER_PASSWORD ?? 'AdminPass123!',
 };
 
 export const NEW_USER = {

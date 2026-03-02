@@ -1,7 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
+import { config as loadEnv } from 'dotenv';
+import { resolve } from 'path';
+
+// Explicitly load .env so all process.env vars are available in test workers
+loadEnv({ path: resolve(__dirname, '.env') });
 
 export default defineConfig({
   testDir: './tests',
+  globalSetup: './global-setup.ts',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -12,8 +18,8 @@ export default defineConfig({
   ],
 
   use: {
-    /* Base URL for the Nexus frontend */
-    baseURL: 'https://localhost:3000',
+    /* Base URL for the Nexus frontend — override via BASE_URL env var or .env file */
+    baseURL: process.env.BASE_URL ?? 'https://localhost:3000',
 
     /* Ignore self-signed certificate errors (Vite dev server uses basicSsl) */
     ignoreHTTPSErrors: true,

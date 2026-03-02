@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { DiagramsPage, CreateDiagramPage, DiagramEditorPage } from '../../pages/diagrams.page';
 import { loginAs, TEST_USER } from '../../fixtures/auth.fixture';
+import { ensureWorkspaceSelected } from '../../utils/workspace.helper';
 
 test.describe('Diagrams Page', () => {
   let diagramsPage: DiagramsPage;
@@ -99,8 +100,10 @@ test.describe('Create Diagram Page', () => {
     await loginAs(page, TEST_USER.email, TEST_USER.password);
     await page.waitForURL('**/dashboard', { timeout: 10000 });
 
+    // Create Diagram requires a workspace to enable the submit button
+    await ensureWorkspaceSelected(page, '/diagrams/create');
+
     createPage = new CreateDiagramPage(page);
-    await createPage.goto();
   });
 
   test.describe('Page Layout', () => {
@@ -148,6 +151,7 @@ test.describe('Diagram Editor', () => {
   test.beforeEach(async ({ page }) => {
     await loginAs(page, TEST_USER.email, TEST_USER.password);
     await page.waitForURL('**/dashboard', { timeout: 10000 });
+    await ensureWorkspaceSelected(page);
   });
 
   test('should load the diagram editor after creation', async ({ page }) => {

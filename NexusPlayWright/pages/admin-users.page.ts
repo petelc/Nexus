@@ -29,7 +29,7 @@ export class AdminUsersPage {
   constructor(page: Page) {
     this.page = page;
     this.heading = page.getByRole('heading', { name: /user management|admin.*users/i });
-    this.searchInput = page.getByPlaceholder(/search users/i);
+    this.searchInput = page.getByPlaceholder(/search by name/i);
     this.loadingSpinner = page.getByRole('progressbar');
     this.errorAlert = page.getByRole('alert').filter({ hasText: /failed to load/i });
     this.userTable = page.getByRole('table');

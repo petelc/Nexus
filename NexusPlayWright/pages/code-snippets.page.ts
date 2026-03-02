@@ -25,7 +25,7 @@ export class CodeSnippetsPage {
     this.page = page;
     this.heading = page.getByRole('heading', { name: /snippets/i });
     this.newSnippetButton = page.getByRole('button', { name: /new snippet/i });
-    this.searchInput = page.getByPlaceholder(/search/i);
+    this.searchInput = page.getByPlaceholder('Search snippets...');
     this.loadingSpinner = page.getByRole('progressbar');
     this.errorAlert = page.getByRole('alert');
     this.emptyState = page.getByText(/no snippets/i);

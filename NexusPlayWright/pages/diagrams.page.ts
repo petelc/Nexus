@@ -56,11 +56,11 @@ export class CreateDiagramPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.heading = page.getByRole('heading', { name: /create.*diagram/i });
+    this.heading = page.getByRole('heading', { name: /new diagram/i });
     this.titleInput = page.getByLabel(/title/i).first();
-    this.diagramTypeSelect = page.getByLabel(/type/i).first();
+    this.diagramTypeSelect = page.getByLabel(/diagram type/i).first();
     this.descriptionInput = page.getByLabel(/description/i).first();
-    this.createButton = page.getByRole('button', { name: /create/i }).first();
+    this.createButton = page.getByRole('button', { name: /create.*editor|create.*open/i });
     this.cancelButton = page.getByRole('button', { name: /cancel/i });
     this.errorAlert = page.getByRole('alert');
   }

@@ -17,7 +17,7 @@ export class ForgotPasswordPage {
   constructor(page: Page) {
     this.page = page;
     this.heading = page.getByRole('heading', { name: 'NEXUS' });
-    this.subtitle = page.getByText('Reset your password');
+    this.subtitle = page.getByText('Reset your password', { exact: true });
     this.instructions = page.getByText(/enter your email address/i);
     this.emailInput = page.getByLabel('Email');
     this.sendButton = page.getByRole('button', { name: /send reset instructions/i });

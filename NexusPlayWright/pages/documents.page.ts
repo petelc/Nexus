@@ -27,7 +27,7 @@ export class DocumentsPage {
     this.page = page;
     this.heading = page.getByRole('heading', { name: /documents/i });
     this.newDocumentButton = page.getByRole('button', { name: /new document/i });
-    this.searchInput = page.getByPlaceholder(/search/i);
+    this.searchInput = page.getByPlaceholder('Search documents...');
     this.viewToggleButton = page.getByRole('button', { name: /view/i });
     this.loadingSpinner = page.getByRole('progressbar');
     this.errorAlert = page.getByRole('alert');
